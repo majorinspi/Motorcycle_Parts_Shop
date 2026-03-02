@@ -98,6 +98,12 @@ body.dark-mode .main-sidebar .nav-link:hover {
         <i class="nav-icon fas fa-user-friends"></i>
         <p>Person</p>
       </a>
+      </li>
+    <li class="nav-item">
+      <a href="<?= base_url('parents') ?>" class="nav-link <?= is_active(1, 'parents') ?>">
+        <i class="nav-icon fas fa-user-friends"></i>
+        <p>Parents</p>
+      </a>
     </li>
      <li class="nav-item">
       <a href="<?= base_url('users') ?>" class="nav-link <?= is_active(1, 'users') ?>">
