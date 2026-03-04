@@ -9,7 +9,7 @@ function showToast(type, message) {
 $('#addUserForm').on('submit', function (e) {
     e.preventDefault();
     $.ajax({
-        url: baseUrl + 'parents/save',
+        url: baseUrl + 'students/save',
         method: 'POST',
         data: $(this).serialize(),
         dataType: 'json',
@@ -17,12 +17,12 @@ $('#addUserForm').on('submit', function (e) {
             if (response.status === 'success') {
                 $('#AddNewModal').modal('hide');
                 $('#addUserForm')[0].reset();
-                showToast('success', 'Parents added successfully!');
+                showToast('success', 'students added successfully!');
                   setTimeout(() => {
                     location.reload();
                 }, 1000); 
             } else {
-                showToast('error', response.message || 'Failed to add parents.');
+                showToast('error', response.message || 'Failed to add students.');
             }
         },
         error: function () {
@@ -34,7 +34,7 @@ $('#addUserForm').on('submit', function (e) {
 $(document).on('click', '.edit-btn', function () {
    const userId = $(this).data('id'); 
    $.ajax({
-    url: baseUrl + 'parents/edit/' + userId,
+    url: baseUrl + 'students/edit/' + userId,
     method: 'GET',
     dataType: 'json',
     success: function (response) {
@@ -45,11 +45,11 @@ $(document).on('click', '.edit-btn', function () {
              $('#editUserModal #address').val(response.data.address);
             $('#editUserModal').modal('show');
         } else {
-            alert('Error fetching parent data');
+            alert('Error fetching student data');
         }
     },
     error: function () {
-        alert('Error fetching parent data');
+        alert('Error fetching student data');
     }
 });
 });
@@ -60,14 +60,14 @@ $(document).ready(function () {
         e.preventDefault(); 
 
         $.ajax({
-            url: baseUrl + 'parents/update',
+            url: baseUrl + 'students/update',
             method: 'POST',
             data: $(this).serialize(),
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
                     $('#editUserModal').modal('hide');
-                    showToast('success', 'Parents Updated successfully!');
+                    showToast('success', 'students Updated successfully!');
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     alert('Error updating: ' + (response.message || 'Unknown error'));
@@ -88,7 +88,7 @@ $(document).on('click', '.deleteUserBtn', function () {
 
     if (confirm('Are you sure you want to delete this parent?')) {
         $.ajax({
-            url: baseUrl + 'parents/delete/' + userId,
+            url: baseUrl + 'students/delete/' + userId,
             method: 'POST', 
             data: {
                 _method: 'DELETE',
@@ -119,7 +119,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: baseUrl + 'parents/fetchRecords',
+            url: baseUrl + 'students/fetchRecords',
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': csrfToken
