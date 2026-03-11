@@ -95,7 +95,7 @@ body.dark-mode .main-sidebar .nav-link:hover {
     </li>
     <li class="nav-item">
       <a href="<?= base_url('person') ?>" class="nav-link <?= is_active(1, 'person') ?>">
-        <i class="nav-icon fas fa-user-friends"></i>
+        <i class="nav-icon fas fa-id-card"></i>
         <p>Person</p>
       </a>
       </li>
@@ -107,9 +107,15 @@ body.dark-mode .main-sidebar .nav-link:hover {
     </li>
     <li class="nav-item">
       <a href="<?= base_url('students') ?>" class="nav-link <?= is_active(1, 'students') ?>">
-        <i class="nav-icon fas fa-user-friends"></i>
+        <i class="nav-icon fas fa-user-graduate"></i>
         <p>Students</p>
       </a>
+       <li class="nav-item">
+      <a href="<?= base_url('teachers') ?>" class="nav-link <?= is_active(1, 'teachers') ?>">
+        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+        <p>Teachers</p>
+      </a>
+      
     </li>
      <li class="nav-item">
       <a href="<?= base_url('users') ?>" class="nav-link <?= is_active(1, 'users') ?>">
