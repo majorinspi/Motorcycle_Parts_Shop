@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Person</h1>
+          <h1 class="m-0">Category Records</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -24,7 +24,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">List of Persons</h3>
+              <h3 class="card-title">Categories</h3>
               <div class="float-right">
                 <button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#AddNewModal">
                   <i class="fa fa-plus-circle fa fw"></i> Add New
@@ -36,9 +36,8 @@
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th style="display:none;">id</th>
-                    <th>Name</th>
-                    <th>Surname</th>
+                    <th style="display:none;">category_id</th>
+                    <th>Part Categories</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -54,66 +53,52 @@
     <!-- ✅ Add New Modal -->
     <div class="modal fade" id="AddNewModal" tabindex="-1" role="dialog" aria-labelledby="AddNewModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <form id="addUserForm">
-          <?= csrf_field() ?>
-          <div class="modal-content">
+        <div class="modal-content">
+          <form id="addCategoryForm">
+            <?= csrf_field() ?>
             <div class="modal-header">
               <h5 class="modal-title"><i class="fa fa-plus-circle fa fw"></i>  Add New</h5>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-
             <div class="modal-body">
               <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" class="form-control" required />
+                <label>Category Name</label>
+                <input type="text" name="category_name" class="form-control" required />
               </div>
-
-              <div class="form-group">
-                <label>Surname</label>
-                <input type="text" name="surname" class="form-control" required />
-              </div>
-          </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-times-circle'></i> Cancel</button>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-          </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-times-circle'></i> Cancel</button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
-  </div>
 
-  <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editUserModalLabel"><i class="far fa-edit fa fw"></i> Edit Record</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form id="editUserForm">
-           <?= csrf_field() ?>
+        <form id="editCategoryForm">
+          <?= csrf_field() ?>
+          <div class="modal-header">
+            <h5 class="modal-title" id="editCategoryModalLabel"><i class="far fa-edit fa fw"></i> Edit Record</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="modal-body">
-
-            <input type="hidden" id="userId" name="id">
-
-             <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" id="name" class="form-control" required />
-              </div>
-
+            <input type="hidden" id="category_id" name="category_id">
             <div class="form-group">
-              <label for="surname">Surname</label>
-              <input type="text" class="form-control" id="surname" name="surname" required>
+              <label>Category Name</label>
+              <input type="text" name="category_name" id="category_name" class="form-control" required />
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-times-circle'></i> Cancel</button>
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </section>
@@ -124,5 +109,5 @@
 
 <?= $this->section('scripts') ?>
 <script> const baseUrl = "<?= base_url() ?>"; </script>
-<script src="<?= base_url('js/person/person.js') ?>"></script>
+<script src="<?= base_url('js/categories/categories.js') ?>"></script>
 <?= $this->endSection() ?>

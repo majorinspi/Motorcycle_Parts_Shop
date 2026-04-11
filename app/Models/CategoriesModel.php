@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class PersonModel extends Model
+class CategoriesModel extends Model
 {
-    protected $table = 'person';
-    protected $primaryKey = 'id';
+    protected $table = 'categories';
+    protected $primaryKey = 'category_id';
 
-    protected $allowedFields = ['name','surname'];
+    protected $allowedFields = ['category_name'];
 
     public function getRecords($start, $length, $searchValue = '')
     {
@@ -18,8 +18,7 @@ class PersonModel extends Model
 
         if (!empty($searchValue)) {
             $builder->groupStart()
-                ->orLike('name', $searchValue)
-                ->orLike('surname', $searchValue)
+                ->orLike('category_name', $searchValue)
                 ->groupEnd();
         }
 

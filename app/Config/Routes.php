@@ -21,39 +21,41 @@ $routes->post('users/update', 'Users::update');
 $routes->delete('users/delete/(:num)', 'Users::delete/$1');
 $routes->post('users/fetchRecords', 'Users::fetchRecords');
 
-// Person routes
-$routes->get('/person', 'Person::index');
-$routes->post('person/save', 'Person::save');
-$routes->get('person/edit/(:segment)', 'Person::edit/$1');
-$routes->post('person/update', 'Person::update');
-$routes->delete('person/delete/(:num)', 'Person::delete/$1');
-$routes->post('person/fetchRecords', 'Person::fetchRecords');
 
-// Parents routes
-$routes->get('/parents', 'Parents::index');
-$routes->post('parents/save', 'Parents::save');
-$routes->get('parents/edit/(:segment)', 'Parents::edit/$1');
-$routes->post('parents/update', 'Parents::update');
-$routes->delete('parents/delete/(:num)', 'Parents::delete/$1');
-$routes->post('parents/fetchRecords', 'Parents::fetchRecords');
-
-// Students routes
-$routes->get('/students', 'Students::index');
-$routes->post('students/save', 'Students::save');
-$routes->get('students/edit/(:segment)', 'Students::edit/$1');
-$routes->post('students/update', 'Students::update');
-$routes->delete('students/delete/(:num)', 'Students::delete/$1');
-$routes->post('students/fetchRecords', 'Students::fetchRecords');
-
-// Teachers routes
-$routes->get('/teachers', 'Teachers::index');
-$routes->post('teachers/save', 'Teachers::save');
-$routes->get('teachers/edit/(:segment)', 'Teachers::edit/$1');
-$routes->post('teachers/update', 'Teachers::update');
-$routes->delete('teachers/delete/(:num)', 'Teachers::delete/$1');
-$routes->post('teachers/fetchRecords', 'Teachers::fetchRecords');
+// Category routes
+$routes->get('/categories', 'Categories::index');
+$routes->post('categories/save', 'Categories::save');
+$routes->get('categories/edit/(:segment)', 'Categories::edit/$1');
+$routes->post('categories/update', 'Categories::update');
+$routes->delete('categories/delete/(:num)', 'Categories::delete/$1');
+$routes->post('categories/fetchRecords', 'Categories::fetchRecords');
 
 
+// Supplier routes
+$routes->get('/suppliers', 'Suppliers::index');
+$routes->post('suppliers/save', 'Suppliers::save');
+$routes->get('suppliers/edit/(:segment)', 'Suppliers::edit/$1');
+$routes->post('suppliers/update', 'Suppliers::update');
+$routes->delete('suppliers/delete/(:num)', 'Suppliers::delete/$1');
+$routes->post('suppliers/fetchRecords', 'Suppliers::fetchRecords');
+
+
+// Product routes
+$routes->get('/products', 'Products::index');
+$routes->post('products/save', 'Products::save');
+$routes->get('products/edit/(:segment)', 'Products::edit/$1');
+$routes->post('products/update', 'Products::update');
+$routes->delete('products/delete/(:num)', 'Products::delete/$1');
+$routes->post('products/fetchRecords', 'Products::fetchRecords');
+
+
+// Transaction routes
+$routes->get('/transactions', 'Transactions::index');
+$routes->post('transactions/save', 'Transactions::save');
+$routes->get('transactions/edit/(:segment)', 'Transactions::edit/$1');
+$routes->post('transactions/update', 'Transactions::update');
+$routes->delete('transactions/delete/(:num)', 'Transactions::delete/$1');
+$routes->post('transactions/fetchRecords', 'Transactions::fetchRecords');
 
 // Logs routes for admin
 $routes->get('/log', 'Logs::log');

@@ -99,6 +99,41 @@ CREATE TABLE `users` (
   `deleted_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- 1. Categories to group your items
+CREATE TABLE Categories (
+    CategoryID int PRIMARY KEY AUTO_INCREMENT,
+    CategoryName varchar(100) NOT NULL
+);
+
+-- 2. Suppliers to track where stock comes from
+CREATE TABLE Suppliers (
+    SupplierID int PRIMARY KEY AUTO_INCREMENT,
+    SupplierName varchar(100) NOT NULL,
+    ContactEmail varchar(100)
+);
+
+-- 3. Products: The core of your inventory
+CREATE TABLE Products (
+    ProductID intPRIMARY KEY AUTO_INCREMENT,
+    SKU varchar(50) UNIQUE NOT NULL,
+    ProductName varchar(100) NOT NULL,
+    CategoryID INT,
+    CurrentStock int DEFAULT 0,
+    ReorderLevel int DEFAULT 10,
+    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+);
+
+-- 4. Transactions to track every movement (In/Out)
+CREATE TABLE Transactions (
+    TransactionID int PRIMARY KEY AUTO_INCREMENT,
+    ProductID int,
+    Type ENUM('In', 'Out') NOT NULL,
+    Quantity int OT NULL,
+    Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
 --
 -- Dumping data for table `users`
 --

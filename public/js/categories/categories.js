@@ -6,23 +6,23 @@ function showToast(type, message) {
     }
 }
 
-$('#addUserForm').on('submit', function (e) {
+$('#addCategoryForm').on('submit', function (e) {
     e.preventDefault();
     $.ajax({
-        url: baseUrl + 'students/save',
+        url: baseUrl + 'categories/save',
         method: 'POST',
         data: $(this).serialize(),
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
                 $('#AddNewModal').modal('hide');
-                $('#addUserForm')[0].reset();
-                showToast('success', 'students added successfully!');
-                  setTimeout(() => {
+                $('#addCategoryForm')[0].reset();
+                showToast('success', 'Category added successfully!');
+                setTimeout(() => {
                     location.reload();
                 }, 1000); 
             } else {
-                showToast('error', response.message || 'Failed to add students.');
+                showToast('error', response.message || 'Failed to add category.');
             }
         },
         error: function () {
@@ -32,42 +32,46 @@ $('#addUserForm').on('submit', function (e) {
 });
 
 $(document).on('click', '.edit-btn', function () {
-   const userId = $(this).data('id'); 
+   const categoryId = $(this).data('category_id'); 
    $.ajax({
-    url: baseUrl + 'students/edit/' + userId,
+    url: baseUrl + 'categories/edit/' + categoryId,
     method: 'GET',
     dataType: 'json',
     success: function (response) {
         if (response.data) {
-            $('#editUserModal #name').val(response.data.name);
-            $('#editUserModal #userId').val(response.data.id);
-            $('#editUserModal #gender').val(response.data.gender);
-             $('#editUserModal #address').val(response.data.address);
-            $('#editUserModal').modal('show');
+            $('#editCategoryModal #category_name').val(response.data.category_name);
+            $('#editCategoryModal #category_id').val(response.data.category_id);
+            $('#editCategoryModal').modal('show');
         } else {
-            alert('Error fetching student data');
+            alert('Error fetching category data');
         }
     },
     error: function () {
-        alert('Error fetching student data');
+        alert('Error fetching category data');
     }
 });
 });
 
+$(document).on('click', '.category-name-btn', function (e) {
+    e.preventDefault();
+    const categoryId = $(this).data('category_id');
+    window.location.href = baseUrl + 'products?category_id=' + categoryId;
+});
+
 
 $(document).ready(function () {
-    $('#editUserForm').on('submit', function (e) {
+    $('#editCategoryForm').on('submit', function (e) {
         e.preventDefault(); 
 
         $.ajax({
-            url: baseUrl + 'students/update',
+            url: baseUrl + 'categories/update',
             method: 'POST',
             data: $(this).serialize(),
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
-                    $('#editUserModal').modal('hide');
-                    showToast('success', 'students Updated successfully!');
+                    $('#editCategoryModal').modal('hide');
+                    showToast('success', 'Category Updated successfully!');
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     alert('Error updating: ' + (response.message || 'Unknown error'));
@@ -81,22 +85,22 @@ $(document).ready(function () {
     });
 });
 
-$(document).on('click', '.deleteUserBtn', function () {
-    const userId = $(this).data('id');
+$(document).on('click', '.deleteCategoryBtn', function () {
+    const categoryId = $(this).data('category_id');
     const csrfName = $('meta[name="csrf-name"]').attr('content');
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    if (confirm('Are you sure you want to delete this parent?')) {
+    if (confirm('Are you sure you want to delete this category?')) {
         $.ajax({
-            url: baseUrl + 'students/delete/' + userId,
-            method: 'POST', 
+            url: baseUrl + 'categories/delete/' + categoryId,
+            method: 'POST',
             data: {
                 _method: 'DELETE',
                 [csrfName]: csrfToken
             },
             success: function (response) {
                 if (response.success) {
-                    showToast('success', 'Parent deleted successfully.');
+                    showToast('success', 'Category deleted successfully.');
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     alert(response.message || 'Failed to delete.');
@@ -119,7 +123,7 @@ $(document).ready(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: baseUrl + 'students/fetchRecords',
+            url: baseUrl + 'categories/fetchRecords',
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': csrfToken
@@ -127,23 +131,29 @@ $(document).ready(function () {
         },
         columns: [
         { data: 'row_number' },
-        { data: 'id', visible: false },
-        { data: 'name' },
-        { data: 'gender' },
-        { data: 'address' },
+        { data: 'category_id', visible: false },
         {
+            data: 'category_name',
+            render: function (data, type, row) {
+                return `<button class="btn btn-sm btn-primary category-name-btn" data-category_id="${row.category_id}">
+                    ${data}
+                </button>`;
+            }
+        },
+        {
+
             data: null,
             orderable: false,
             searchable: false,
             render: function (data, type, row) {
                 return `
-                <button class="btn btn-sm btn-warning edit-btn" data-id="${row.id}">
+                <button class="btn btn-sm btn-warning edit-btn" data-category_id="${row.category_id}">
                 <i class="far fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger deleteUserBtn" data-id="${row.id}">
+                <button class="btn btn-sm btn-danger deleteCategoryBtn" data-category_id="${row.category_id}">
                 <i class="fas fa-trash-alt"></i>
                 </button>
-                `;              
+                `;
             }
         }
         ],

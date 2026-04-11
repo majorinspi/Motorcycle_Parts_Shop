@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TeachersModel extends Model
+class CustomersModel extends Model
 {
-    protected $table = 'teachers';
-    protected $primaryKey = 'id';
+    protected $table = 'customers';
+    protected $primaryKey = 'customer_id';
 
-    protected $allowedFields = ['first_name','last_name','email'];
+    protected $allowedFields = ['customer_name', 'contact_number', 'address'];
 
     public function getRecords($start, $length, $searchValue = '')
     {
@@ -18,9 +18,9 @@ class TeachersModel extends Model
 
         if (!empty($searchValue)) {
             $builder->groupStart()
-                ->orLike('first_name', $searchValue)
-                ->orLike('last_name', $searchValue)
-                ->orLike('email', $searchValue)
+                ->orLike('customer_name', $searchValue)
+                ->orLike('contact_number', $searchValue)
+                ->orLike('address', $searchValue)
                 ->groupEnd();
         }
 

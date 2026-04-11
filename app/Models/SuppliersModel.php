@@ -4,12 +4,12 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ParentsModel extends Model
+class SuppliersModel extends Model
 {
-    protected $table = 'parents';
-    protected $primaryKey = 'id';
+    protected $table = 'suppliers';
+    protected $primaryKey = 'supplier_id';
 
-    protected $allowedFields = ['name','gender','address'];
+    protected $allowedFields = ['supplier_name', 'contact_email'];
 
     public function getRecords($start, $length, $searchValue = '')
     {
@@ -18,9 +18,7 @@ class ParentsModel extends Model
 
         if (!empty($searchValue)) {
             $builder->groupStart()
-                ->orLike('name', $searchValue)
-                ->orLike('gender', $searchValue)
-                ->orLike('address', $searchValue)
+                ->orLike('supplier_name', $searchValue)
                 ->groupEnd();
         }
 

@@ -93,28 +93,38 @@ body.dark-mode .main-sidebar .nav-link:hover {
         <p>Activity Logs</p>
       </a>
     </li>
-    <li class="nav-item">
-      <a href="<?= base_url('person') ?>" class="nav-link <?= is_active(1, 'person') ?>">
-        <i class="nav-icon fas fa-id-card"></i>
-        <p>Person</p>
+
+
+        <li class="nav-item">
+      <a href="<?= base_url('categories') ?>" class="nav-link <?= is_active(1, 'categories') ?>">
+        <i class="nav-icon fas fa-list-ul"></i>
+        <p>Product Categories </p>
       </a>
       </li>
-    <li class="nav-item">
-      <a href="<?= base_url('parents') ?>" class="nav-link <?= is_active(1, 'parents') ?>">
-        <i class="nav-icon fas fa-user-friends"></i>
-        <p>Parents</p>
+
+      <li class="nav-item">
+      <a href="<?= base_url('suppliers') ?>" class="nav-link <?= is_active(1, 'suppliers') ?>">
+        <i class="nav-icon fas fa-dolly"></i>
+        <p>Supplier Records</p>
       </a>
-    </li>
-    <li class="nav-item">
-      <a href="<?= base_url('students') ?>" class="nav-link <?= is_active(1, 'students') ?>">
-        <i class="nav-icon fas fa-user-graduate"></i>
-        <p>Students</p>
+      </li>
+
+      <li class="nav-item">
+      <a href="<?= base_url('products') ?>" class="nav-link <?= is_active(1, 'products') ?>">
+        <i class="nav-icon fas fa-clipboard-list"></i>
+        <p>Product Records</p>
       </a>
-       <li class="nav-item">
-      <a href="<?= base_url('teachers') ?>" class="nav-link <?= is_active(1, 'teachers') ?>">
-        <i class="nav-icon fas fa-chalkboard-teacher"></i>
-        <p>Teachers</p>
+      </li>
+
+
+      <li class="nav-item">
+      <a href="<?= base_url('transactions') ?>" class="nav-link <?= is_active(1, 'transactions') ?>">
+        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+        <p>Transaction Records</p>
       </a>
+      </li>
+    
+    
       
     </li>
      <li class="nav-item">

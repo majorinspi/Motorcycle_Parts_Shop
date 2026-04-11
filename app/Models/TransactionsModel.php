@@ -4,23 +4,24 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class StudentsModel extends Model
+class TransactionsModel extends Model
 {
-    protected $table = 'students';
-    protected $primaryKey = 'id';
+    protected $table = 'transactions';
+    protected $primaryKey = 'transaction_id';
 
-    protected $allowedFields = ['name','gender','address'];
+    protected $allowedFields = ['product_id', 'type', 'quantity', 'date'];
 
     public function getRecords($start, $length, $searchValue = '')
     {
         $builder = $this->builder();
-        $builder->select('*');
+        $builder->select('transactions.*, products.product_name');
+        $builder->join('products', 'products.product_id = transactions.product_id', 'left');
 
         if (!empty($searchValue)) {
             $builder->groupStart()
-                ->orLike('name', $searchValue)
-                ->orLike('gender', $searchValue)
-                ->orLike('address', $searchValue)
+                ->orLike('transactions.transaction_id', $searchValue)
+                ->orLike('products.product_name', $searchValue)
+                ->orLike('transactions.type', $searchValue)
                 ->groupEnd();
         }
 

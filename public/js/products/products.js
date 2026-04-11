@@ -6,23 +6,23 @@ function showToast(type, message) {
     }
 }
 
-$('#addUserForm').on('submit', function (e) {
+$('#addProductsForm').on('submit', function (e) {
     e.preventDefault();
     $.ajax({
-        url: baseUrl + 'teachers/save',
+        url: baseUrl + 'products/save',
         method: 'POST',
         data: $(this).serialize(),
         dataType: 'json',
         success: function (response) {
             if (response.status === 'success') {
                 $('#AddNewModal').modal('hide');
-                $('#addUserForm')[0].reset();
-                showToast('success', 'Teachers added successfully!');
-                  setTimeout(() => {
+                $('#addProductsForm')[0].reset();
+                showToast('success', 'Product added successfully!');
+                setTimeout(() => {
                     location.reload();
                 }, 1000); 
             } else {
-                showToast('error', response.message || 'Failed to add Teachers.');
+                showToast('error', response.message || 'Failed to add product.');
             }
         },
         error: function () {
@@ -32,42 +32,45 @@ $('#addUserForm').on('submit', function (e) {
 });
 
 $(document).on('click', '.edit-btn', function () {
-   const userId = $(this).data('id'); 
+   const productId = $(this).data('product_id'); 
    $.ajax({
-    url: baseUrl + 'teachers/edit/' + userId,
+    url: baseUrl + 'products/edit/' + productId,
     method: 'GET',
     dataType: 'json',
     success: function (response) {
         if (response.data) {
-            $('#editUserModal #name').val(response.data.first_name);
-            $('#editUserModal #userId').val(response.data.id);
-            $('#editUserModal #name').val(response.data.last_name);
-             $('#editUserModal #email').val(response.data.email);
-            $('#editUserModal').modal('show');
+            $('#editSupplierModal #product_name').val(response.data.product_name);
+            $('#editSupplierModal #product_id').val(response.data.product_id);
+            $('#editSupplierModal #category_id').val(response.data.category_id);
+            $('#editSupplierModal #current_stock').val(response.data.current_stock);
+            $('#editSupplierModal #reorder_level').val(response.data.reorder_level);
+
+            
+            $('#editProductsModal').modal('show');
         } else {
-            alert('Error fetching teacher data');
+            alert('Error fetching product data');
         }
     },
     error: function () {
-        alert('Error fetching teacher data');
+        alert('Error fetching product data');
     }
 });
 });
 
 
 $(document).ready(function () {
-    $('#editUserForm').on('submit', function (e) {
+    $('#editProductsForm').on('submit', function (e) {
         e.preventDefault(); 
 
         $.ajax({
-            url: baseUrl + 'teachers/update',
+            url: baseUrl + 'products/update',
             method: 'POST',
             data: $(this).serialize(),
             dataType: 'json',
             success: function (response) {
                 if (response.success) {
-                    $('#editUserModal').modal('hide');
-                    showToast('success', 'Teachers Updated successfully!');
+                    $('#editProductsModal').modal('hide');
+                    showToast('success', 'Product Updated successfully!');
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     alert('Error updating: ' + (response.message || 'Unknown error'));
@@ -81,22 +84,22 @@ $(document).ready(function () {
     });
 });
 
-$(document).on('click', '.deleteUserBtn', function () {
-    const userId = $(this).data('id');
+$(document).on('click', '.deleteProductBtn', function () {
+    const productId = $(this).data('product_id');
     const csrfName = $('meta[name="csrf-name"]').attr('content');
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-    if (confirm('Are you sure you want to delete this teacher?')) {
+    if (confirm('Are you sure you want to delete this product?')) {
         $.ajax({
-            url: baseUrl + 'teachers/delete/' + userId,
-            method: 'POST', 
+            url: baseUrl + 'products/delete/' + productId,
+            method: 'POST',
             data: {
                 _method: 'DELETE',
                 [csrfName]: csrfToken
             },
             success: function (response) {
                 if (response.success) {
-                    showToast('success', 'Teachers deleted successfully.');
+                    showToast('success', 'Product deleted successfully.');
                     setTimeout(() => location.reload(), 1000);
                 } else {
                     alert(response.message || 'Failed to delete.');
@@ -112,14 +115,16 @@ $(document).on('click', '.deleteUserBtn', function () {
 $(document).ready(function () {
     const $table = $('#example1');
 
-    const csrfName = 'csrf_test_name'; 
-    const csrfToken = $('input[name="' + csrfName + '"]').val();
+    const csrfName = $('meta[name="csrf-name"]').attr('content');
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryId = urlParams.get('category_id');
 
     $table.DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: baseUrl + 'teachers/fetchRecords',
+            url: baseUrl + 'products/fetchRecords' + (categoryId ? '?category_id=' + categoryId : ''),
             type: 'POST',
             headers: {
                 'X-CSRF-TOKEN': csrfToken
@@ -127,23 +132,25 @@ $(document).ready(function () {
         },
         columns: [
         { data: 'row_number' },
-        { data: 'id', visible: false },
-        { data: 'first_name' },
-        { data: 'last_name' },
-        { data: 'email' },
+        { data: 'product_id', visible: false },
+        { data: 'product_name' },
+        { data: 'category_name' },
+        { data: 'current_stock' },
+        { data: 'reorder_level' },
         {
+
             data: null,
             orderable: false,
             searchable: false,
             render: function (data, type, row) {
                 return `
-                <button class="btn btn-sm btn-warning edit-btn" data-id="${row.id}">
+                <button class="btn btn-sm btn-warning edit-btn" data-product_id="${row.product_id}">
                 <i class="far fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger deleteUserBtn" data-id="${row.id}">
+                <button class="btn btn-sm btn-danger deleteProductBtn" data-product_id="${row.product_id}">
                 <i class="fas fa-trash-alt"></i>
                 </button>
-                `;              
+                `;
             }
         }
         ],
