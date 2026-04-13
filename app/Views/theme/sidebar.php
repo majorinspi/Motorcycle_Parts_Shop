@@ -81,18 +81,7 @@ body.dark-mode .main-sidebar .nav-link:hover {
   <div class="sidebar">
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-       <li class="nav-item">
-        <a href="<?= base_url('dashboard') ?>" class="nav-link <?= is_active(1, 'dashboard') ?>">
-         <i class="nav-icon fas fa-tachometer-alt"></i>
-         <p>Dashboard</p>
-       </a>
-     </li>
-      <li class="nav-item">
-      <a href="<?= base_url('log') ?>" class="nav-link <?= is_active(1, 'log') ?>">
-        <i class="nav-icon fas fa-history"></i>
-        <p>Activity Logs</p>
-      </a>
-    </li>
+      
 
 
         <li class="nav-item">

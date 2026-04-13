@@ -18,7 +18,7 @@ $routes->get('/users', 'Users::index');
 $routes->post('users/save', 'Users::save');
 $routes->get('users/edit/(:segment)', 'Users::edit/$1');
 $routes->post('users/update', 'Users::update');
-$routes->delete('users/delete/(:num)', 'Users::delete/$1');
+$routes->post('users/delete/(:num)', 'Users::delete/$1');
 $routes->post('users/fetchRecords', 'Users::fetchRecords');
 
 

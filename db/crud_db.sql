@@ -102,36 +102,36 @@ CREATE TABLE `users` (
 
 -- 1. Categories to group your items
 CREATE TABLE Categories (
-    CategoryID int PRIMARY KEY AUTO_INCREMENT,
-    CategoryName varchar(100) NOT NULL
+    category_id int PRIMARY KEY AUTO_INCREMENT,
+    category_name varchar(100) NOT NULL
 );
 
 -- 2. Suppliers to track where stock comes from
 CREATE TABLE Suppliers (
-    SupplierID int PRIMARY KEY AUTO_INCREMENT,
-    SupplierName varchar(100) NOT NULL,
-    ContactEmail varchar(100)
+    supplier_id int PRIMARY KEY AUTO_INCREMENT,
+    supplier_name varchar(100) NOT NULL,
+    contact_email varchar(100)
 );
 
 -- 3. Products: The core of your inventory
 CREATE TABLE Products (
-    ProductID intPRIMARY KEY AUTO_INCREMENT,
-    SKU varchar(50) UNIQUE NOT NULL,
-    ProductName varchar(100) NOT NULL,
-    CategoryID INT,
-    CurrentStock int DEFAULT 0,
-    ReorderLevel int DEFAULT 10,
-    FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)
+    product_id int PRIMARY KEY AUTO_INCREMENT,
+    sku varchar(50) UNIQUE NOT NULL,
+    product_name varchar(100) NOT NULL,
+    category_id int,
+    current_stock int DEFAULT 0,
+    reorder_level int DEFAULT 10,
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
 
 -- 4. Transactions to track every movement (In/Out)
 CREATE TABLE Transactions (
-    TransactionID int PRIMARY KEY AUTO_INCREMENT,
-    ProductID int,
-    Type ENUM('In', 'Out') NOT NULL,
-    Quantity int OT NULL,
-    Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+    transaction_id int PRIMARY KEY AUTO_INCREMENT,
+    product_id int,
+    type ENUM('In', 'Out') NOT NULL,
+    quantity int NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
 --

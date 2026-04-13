@@ -39,7 +39,7 @@
                     <th style="display:none;">product_id</th>
                     <th>Product Name</th>
                     <th>Category</th>
-                    <th>Current Stock</th>
+                    <th>Stock</th>
                     <th>Reorder Level</th>
                     <th>Actions</th>
                   </tr>
