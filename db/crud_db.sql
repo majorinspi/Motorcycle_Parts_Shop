@@ -116,7 +116,6 @@ CREATE TABLE Suppliers (
 -- 3. Products: The core of your inventory
 CREATE TABLE Products (
     product_id int PRIMARY KEY AUTO_INCREMENT,
-    sku varchar(50) UNIQUE NOT NULL,
     product_name varchar(100) NOT NULL,
     category_id int,
     current_stock int DEFAULT 0,
