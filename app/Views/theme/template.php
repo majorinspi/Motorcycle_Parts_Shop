@@ -22,7 +22,8 @@
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/toastr/toastr.min.css') ?>">
-
+  <!-- CUSTOM ADVANCED UI CSS -->
+  <link rel="stylesheet" href="<?= base_url('assets/css/advanced_ui.css') ?>">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -95,82 +96,6 @@
 </body>
 </html>
 <script>
-const themeToggle = document.getElementById('themeToggle');
-const navbar = document.getElementById('mainNavbar');
-const sidebar = document.getElementById('mainSidebar');
-const brandLink = document.getElementById('brandLink');
-
-// Apply saved theme on load
-let savedTheme = localStorage.getItem('adminlteTheme');
-if(savedTheme === 'dark'){
+    // MotoShift Advanced UI initialized
     document.body.classList.add('dark-mode');
-
-    // Navbar
-    navbar.classList.remove('navbar-warning');
-    navbar.classList.add('navbar-dark','bg-dark');
-
-    // Sidebar
-    sidebar.classList.remove('sidebar-light');
-    sidebar.classList.add('sidebar-dark-primary');
-
-    // Brand link
-    brandLink.classList.remove('bg-warning');
-    brandLink.classList.add('bg-dark');
-
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-} else {
-    // Light mode
-    navbar.classList.add('navbar-warning');
-
-    sidebar.classList.remove('sidebar-dark-primary');
-    sidebar.classList.add('sidebar-light');
-
-    brandLink.classList.remove('bg-dark');
-    brandLink.classList.add('bg-warning');
-
-    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-}
-
-// Toggle theme
-themeToggle.addEventListener('click', function(e){
-    e.preventDefault();
-
-    if(document.body.classList.contains('dark-mode')){
-        // Switch to light
-        document.body.classList.remove('dark-mode');
-
-        // Navbar
-        navbar.classList.remove('navbar-dark','bg-dark');
-        navbar.classList.add('navbar-warning');
-
-        // Sidebar
-        sidebar.classList.remove('sidebar-dark-primary');
-        sidebar.classList.add('sidebar-light');
-
-        // Brand link
-        brandLink.classList.remove('bg-dark');
-        brandLink.classList.add('bg-warning');
-
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        localStorage.setItem('adminlteTheme','light');
-    } else {
-        // Switch to dark
-        document.body.classList.add('dark-mode');
-
-        // Navbar
-        navbar.classList.remove('navbar-warning');
-        navbar.classList.add('navbar-dark','bg-dark');
-
-        // Sidebar
-        sidebar.classList.remove('sidebar-light');
-        sidebar.classList.add('sidebar-dark-primary');
-
-        // Brand link
-        brandLink.classList.remove('bg-warning');
-        brandLink.classList.add('bg-dark');
-
-        themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-        localStorage.setItem('adminlteTheme','dark');
-    }
-});
 </script>
