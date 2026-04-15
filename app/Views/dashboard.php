@@ -10,7 +10,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right bg-transparent p-0">
-              <li class="breadcrumb-item"><a href="#" class="text-warning">MotoShift</a></li>
+              <li class="breadcrumb-item"><a href="#" class="text-warning">Franz Cacz Motorcycle Parts and
+Accessories Shop</a></li>
               <li class="breadcrumb-item active text-muted">Dashboard</li>
             </ol>
           </div>

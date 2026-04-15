@@ -1,6 +1,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-5" id="mainSidebar">
 <div class="brand-link" id="brandLink">
-    <span class="brand-text ml-3"><i class="fas fa-motorcycle text-warning mr-2"></i> MOTOSHIFT</span>
+    <span class="brand-text ml-3" style="font-size: 0.9rem; line-height: 1.2; display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <i class="fas fa-motorcycle text-warning"></i>
+        <span>Franz Cacz Motorcycle<br/>Parts & Accessories Shop</span>
+    </span>
 </div>
   <div class="sidebar">
     <nav class="mt-2">

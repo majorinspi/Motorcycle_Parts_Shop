@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>MotoShift | Premium Parts Management</title>
+  <title>: Franz Cacz Motorcycle Parts and
+Accessories Shop| Premium Parts Management</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap">
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/plugins/fontawesome-free/css/all.min.css') ?>">
   <style>
@@ -221,7 +222,8 @@
 
 <div class="login-container">
   <div class="logo-area">
-    <h1>MotoShift</h1>
+    <h1>Franz Cacz Motorcycle Parts and
+Accessories Shop</h1>
     <p>Premium Parts Management</p>
   </div>
 

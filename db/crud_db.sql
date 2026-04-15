@@ -86,7 +86,7 @@ INSERT INTO `tbl_logs` (`LOGID`, `USERID`, `ACTION`, `DATELOG`, `TIMELOG`, `user
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `uuid` char(36) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -112,7 +112,6 @@ CREATE TABLE Suppliers (
     supplier_name varchar(100) NOT NULL,
     contact_email varchar(100)
 );
-
 -- 3. Products: The core of your inventory
 CREATE TABLE Products (
     product_id int PRIMARY KEY AUTO_INCREMENT,
