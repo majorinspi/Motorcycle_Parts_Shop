@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Products Records</h1>
+          <h1 class="m-0">Product List</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -40,7 +40,7 @@
                     <th>Product Name</th>
                     <th>Category</th>
                     <th>Stock</th>
-                    <th>Reorder Level</th>
+                    <th>Price</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -82,8 +82,8 @@
                 <input type="number" name="current_stock" class="form-control" required />
               </div>
               <div class="form-group">
-                <label>Reorder Level</label>
-                <input type="number" name="reorder_level" class="form-control" required />
+                <label>Unit Price</label>
+                <input type="number" name="unit_price" class="form-control" step="0.01" required />
               </div>
             </div>
             <div class="modal-footer">
@@ -126,8 +126,8 @@
               <input type="number" name="current_stock" id="current_stock" class="form-control" required />
             </div>
             <div class="form-group">
-              <label>Reorder Level</label>
-              <input type="number" name="reorder_level" id="reorder_level" class="form-control" required />
+              <label>Unit Price</label>
+              <input type="number" name="unit_price" id="unit_price" class="form-control" step="0.01" required />
             </div>
           </div>
           <div class="modal-footer">

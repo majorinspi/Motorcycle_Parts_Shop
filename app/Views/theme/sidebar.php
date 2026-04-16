@@ -53,7 +53,7 @@
         <li class="nav-item">
           <a href="<?= base_url('products') ?>" class="nav-link <?= is_active(1, 'products') ?>">
             <i class="nav-icon fas fa-clipboard-list text-purple"></i>
-            <p>Product Records</p>
+            <p>Product List</p>
           </a>
         </li>
 

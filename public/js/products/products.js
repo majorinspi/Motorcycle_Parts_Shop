@@ -39,11 +39,11 @@ $(document).on('click', '.edit-btn', function () {
     dataType: 'json',
     success: function (response) {
         if (response.data) {
-            $('#editSupplierModal #product_name').val(response.data.product_name);
-            $('#editSupplierModal #product_id').val(response.data.product_id);
-            $('#editSupplierModal #category_id').val(response.data.category_id);
-            $('#editSupplierModal #current_stock').val(response.data.current_stock);
-            $('#editSupplierModal #reorder_level').val(response.data.reorder_level);
+            $('#editProductsModal #product_name').val(response.data.product_name);
+            $('#editProductsModal #product_id').val(response.data.product_id);
+            $('#editProductsModal #category_id').val(response.data.category_id);
+            $('#editProductsModal #current_stock').val(response.data.current_stock);
+            $('#editProductsModal #unit_price').val(response.data.unit_price);
 
             
             $('#editProductsModal').modal('show');
@@ -84,6 +84,7 @@ $(document).ready(function () {
     });
 });
 
+
 $(document).on('click', '.deleteProductBtn', function () {
     const productId = $(this).data('product_id');
     const csrfName = $('meta[name="csrf-name"]').attr('content');
@@ -115,7 +116,7 @@ $(document).on('click', '.deleteProductBtn', function () {
 $(document).ready(function () {
     const $table = $('#example1');
 
-    const csrfName = $('meta[name="csrf-name"]').attr('content');
+    const csrfName = $('meta[name="csrf-name"]').attr('content') ;
     const csrfToken = $('meta[name="csrf-token"]').attr('content');
     const urlParams = new URLSearchParams(window.location.search);
     const categoryId = urlParams.get('category_id');
@@ -130,30 +131,37 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': csrfToken
             }
         },
-        columns: [
-        { data: 'row_number' },
-        { data: 'product_id', visible: false },
-        { data: 'product_name' },
-        { data: 'category_name' },
-        { data: 'current_stock' },
-        { data: 'reorder_level' },
-        {
+       columns: [
+    { data: 'row_number' },
+    { data: 'product_id', visible: false },
+    { data: 'product_name' },
+    { data: 'category_name' },
+    { data: 'current_stock' },
 
-            data: null,
-            orderable: false,
-            searchable: false,
-            render: function (data, type, row) {
-                return `
-                <button class="btn btn-sm btn-warning edit-btn" data-product_id="${row.product_id}">
-                <i class="far fa-edit"></i>
-                </button>
-                <button class="btn btn-sm btn-danger deleteProductBtn" data-product_id="${row.product_id}">
-                <i class="fas fa-trash-alt"></i>
-                </button>
-                `;
-            }
+    // THIS IS WHERE YOU ADD ₱
+    {
+        data: 'unit_price',
+        render: function (data) {
+            return '₱ ' + parseFloat(data).toFixed(2);
         }
-        ],
+    },
+
+    {
+        data: null,
+        orderable: false,
+        searchable: false,
+        render: function (data, type, row) {
+            return `
+            <button class="btn btn-sm btn-warning edit-btn" data-product_id="${row.product_id}">
+                <i class="far fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-danger deleteProductBtn" data-product_id="${row.product_id}">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+            `;
+        }
+    }
+],
         responsive: true,
         autoWidth: false
     });

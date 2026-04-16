@@ -30,7 +30,7 @@ class Products extends Controller
         $product_name = $this->request->getPost('product_name');
         $category_id = $this->request->getPost('category_id');
         $current_stock = $this->request->getPost('current_stock');
-        $reorder_level = $this->request->getPost('reorder_level');
+        $unit_price = $this->request->getPost('unit_price');
         $productsModel = new \App\Models\ProductsModel();
         $logModel = new LogModel();
         $transactionsModel = new \App\Models\TransactionsModel();
@@ -39,7 +39,7 @@ class Products extends Controller
             'product_name' => $product_name,
             'category_id' => $category_id,
             'current_stock' => $current_stock,
-            'reorder_level' => $reorder_level   
+            'unit_price' => $unit_price
         ];
 
         if ($productsModel->insert($data)) {
@@ -71,7 +71,7 @@ class Products extends Controller
         $product_name = $this->request->getPost('product_name');
         $category_id = $this->request->getPost('category_id');  
         $current_stock = $this->request->getPost('current_stock');
-        $reorder_level = $this->request->getPost('reorder_level');      
+        $unit_price = $this->request->getPost('unit_price');
 
         // Get the existing product to check stock change
         $existingProduct = $model->find($productId);
@@ -81,7 +81,7 @@ class Products extends Controller
             'product_name' => $product_name,
             'category_id' => $category_id,
             'current_stock' => $current_stock,
-            'reorder_level' => $reorder_level
+            'unit_price' => $unit_price
         ];
 
         $updated = $model->update($productId, $userData);
@@ -127,24 +127,48 @@ class Products extends Controller
     }
 }
 
-public function delete($product_id){
+public function delete($product_id = null)
+{
+    $db = \Config\Database::connect();
     $model = new ProductsModel();
     $logModel = new LogModel();
-    $product = $model->find($product_id);
-    if (!$product) {
-        return $this->response->setJSON(['success' => false, 'message' => 'Product not found.']);
-    }
 
-    $deleted = $model->delete($product_id);
+    try {
+        $product = $model->find($product_id);
 
-    if ($deleted) {
+        if (!$product) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Product not found.'
+            ]);
+        }
+
+        // 🔥 STEP 1: delete from transactions FIRST
+        $db->table('transactions')
+           ->where('product_id', $product_id)
+           ->delete();
+
+        // 🔥 STEP 2: delete from other related tables (if any)
+        // $db->table('other_table')->where('product_id', $product_id)->delete();
+
+        // 🔥 STEP 3: delete product
+        $model->delete($product_id);
+
         $logModel->addLog('Delete product', 'DELETED');
-        return $this->response->setJSON(['success' => true, 'message' => 'Product deleted successfully.']);
-    } else {
-        return $this->response->setJSON(['success' => false, 'message' => 'Failed to delete Product.']);
+
+        return $this->response->setJSON([
+            'success' => true,
+            'message' => 'Product deleted successfully.'
+        ]);
+
+    } catch (\Throwable $e) {
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => 'Delete failed.',
+            'error' => $e->getMessage()
+        ]);
     }
 }
-
 public function fetchRecords()
 {
     $request = service('request');

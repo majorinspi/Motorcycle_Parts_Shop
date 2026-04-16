@@ -9,7 +9,7 @@ class ProductsModel extends Model
     protected $table = 'products';
     protected $primaryKey = 'product_id';
 
-    protected $allowedFields = ['product_name', 'category_id', 'current_stock', 'reorder_level'];
+    protected $allowedFields = ['product_name', 'category_id', 'current_stock', 'unit_price'];
 
     public function getRecords($start, $length, $searchValue = '', $categoryId = null)
     {

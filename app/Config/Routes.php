@@ -18,7 +18,7 @@ $routes->get('/users', 'Users::index');
 $routes->post('users/save', 'Users::save');
 $routes->get('users/edit/(:segment)', 'Users::edit/$1');
 $routes->post('users/update', 'Users::update');
-$routes->post('users/delete/(:num)', 'Users::delete/$1');
+$routes->delete('users/delete/(:num)', 'Users::delete/$1');
 $routes->post('users/fetchRecords', 'Users::fetchRecords');
 
 
@@ -47,7 +47,7 @@ $routes->get('products/edit/(:segment)', 'Products::edit/$1');
 $routes->post('products/update', 'Products::update');
 $routes->delete('products/delete/(:num)', 'Products::delete/$1');
 $routes->post('products/fetchRecords', 'Products::fetchRecords');
-
+   
 
 // Transaction routes
 $routes->get('/transactions', 'Transactions::index');
