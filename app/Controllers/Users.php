@@ -99,7 +99,7 @@ class Users extends Controller
         $updated = $model->update($userId, $userData);
 
         if ($updated) {
-            $logModel->addLog('New User has been apdated: ' . $name, 'UPDATED');
+            $logModel->addLog('New User has been updated: ' . $name, 'UPDATED');
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'User updated successfully.'

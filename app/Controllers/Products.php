@@ -28,6 +28,7 @@ class Products extends Controller
 
     public function save(){
         $product_name = $this->request->getPost('product_name');
+        $brand = $this->request->getPost('brand');
         $category_id = $this->request->getPost('category_id');
         $current_stock = $this->request->getPost('current_stock');
         $unit_price = $this->request->getPost('unit_price');
@@ -37,6 +38,7 @@ class Products extends Controller
 
         $data = [
             'product_name' => $product_name,
+            'brand' => $brand,
             'category_id' => $category_id,
             'current_stock' => $current_stock,
             'unit_price' => $unit_price
@@ -69,6 +71,7 @@ class Products extends Controller
         $transactionsModel = new \App\Models\TransactionsModel();
         $productId = $this->request->getPost('product_id');
         $product_name = $this->request->getPost('product_name');
+        $brand = $this->request->getPost('brand');
         $category_id = $this->request->getPost('category_id');  
         $current_stock = $this->request->getPost('current_stock');
         $unit_price = $this->request->getPost('unit_price');
@@ -79,6 +82,7 @@ class Products extends Controller
 
         $userData = [
             'product_name' => $product_name,
+            'brand' => $brand,
             'category_id' => $category_id,
             'current_stock' => $current_stock,
             'unit_price' => $unit_price
@@ -143,15 +147,15 @@ public function delete($product_id = null)
             ]);
         }
 
-        // 🔥 STEP 1: delete from transactions FIRST
+        //  delete from transactions FIRST
         $db->table('transactions')
            ->where('product_id', $product_id)
            ->delete();
 
-        // 🔥 STEP 2: delete from other related tables (if any)
+        // delete from other related tables (if any)
         // $db->table('other_table')->where('product_id', $product_id)->delete();
 
-        // 🔥 STEP 3: delete product
+        //  delete product
         $model->delete($product_id);
 
         $logModel->addLog('Delete product', 'DELETED');

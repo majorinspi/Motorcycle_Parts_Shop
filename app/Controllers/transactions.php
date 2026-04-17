@@ -29,7 +29,7 @@ class Transactions extends Controller
             'product_id' => $product_id,
             'type' => $type,
             'quantity' => $quantity,
-            'date' => $date
+            'date' => date('Y-m-d H:i:s')
         ];
 
         if ($transactionsModel->insert($data)) {
@@ -53,7 +53,7 @@ class Transactions extends Controller
             'product_id' => $product_id,
             'type' => $type,
             'quantity' => $quantity,
-            'date' => $date
+            'date' => date('Y-m-d H:i:s')
         ];
 
         $updated = $model->update($transactionId, $userData);

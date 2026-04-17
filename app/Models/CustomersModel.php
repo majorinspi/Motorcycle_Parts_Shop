@@ -9,7 +9,7 @@ class CustomersModel extends Model
     protected $table = 'customers';
     protected $primaryKey = 'customer_id';
 
-    protected $allowedFields = ['customer_name', 'contact_number', 'address'];
+    protected $allowedFields = ['customer_name', 'contact_number', 'address', 'email'];
 
     public function getRecords($start, $length, $searchValue = '')
     {

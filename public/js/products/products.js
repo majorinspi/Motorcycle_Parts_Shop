@@ -41,6 +41,7 @@ $(document).on('click', '.edit-btn', function () {
         if (response.data) {
             $('#editProductsModal #product_name').val(response.data.product_name);
             $('#editProductsModal #product_id').val(response.data.product_id);
+            $('#editProductsModal #brand').val(response.data.brand);
             $('#editProductsModal #category_id').val(response.data.category_id);
             $('#editProductsModal #current_stock').val(response.data.current_stock);
             $('#editProductsModal #unit_price').val(response.data.unit_price);
@@ -135,6 +136,7 @@ $(document).ready(function () {
     { data: 'row_number' },
     { data: 'product_id', visible: false },
     { data: 'product_name' },
+    { data: 'brand', },
     { data: 'category_name' },
     { data: 'current_stock' },
 

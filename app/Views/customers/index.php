@@ -6,7 +6,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0">Product List</h1>
+          <h1 class="m-0">Customer Records</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -24,7 +24,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Products</h3>
+              <h3 class="card-title">Customers</h3>
               <div class="float-right">
                 <button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#AddNewModal">
                   <i class="fa fa-plus-circle fa fw"></i> Add New
@@ -36,12 +36,12 @@
                 <thead>
                   <tr>
                     <th>No.</th>
-                    <th style="display:none;">product_id</th>
-                    <th>Product Name</th>
-                    <th>Brand</th>
-                    <th>Category</th>
-                    <th>Stock</th>
-                    <th>Price</th>
+                    <th style="display:none;">customer_id</th>
+                    <th>Customer Name</th>
+                    <th>Contact Number</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Date</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -58,7 +58,7 @@
     <div class="modal fade" id="AddNewModal" tabindex="-1" role="dialog" aria-labelledby="AddNewModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form id="addProductsForm">
+          <form id="addCustomerForm">
             <?= csrf_field() ?>
             <div class="modal-header">
               <h5 class="modal-title"><i class="fa fa-plus-circle fa fw"></i>  Add New</h5>
@@ -66,29 +66,20 @@
             </div>
             <div class="modal-body">
               <div class="form-group">
-                <label>Product Name</label>
-                <input type="text" name="product_name" class="form-control" required />
+                <label>Customer Name</label>
+                <input type="text" name="customer_name" class="form-control" required />
               </div>
               <div class="form-group">
-                <label>Brand</label>
-                <input type="text" name="brand" class="form-control" required />
+                <label>Contact Number</label>
+                <input type="text" name="contact_number" class="form-control" required />
               </div>
               <div class="form-group">
-                <label>Category</label>
-                <select name="category_id" class="form-control" required>
-                  <option value="">Select Category</option>
-                  <?php foreach ($categories as $category): ?>
-                    <option value="<?= $category['category_id'] ?>"><?= $category['category_name'] ?></option>
-                  <?php endforeach; ?>
-                </select>
+                <label>Address</label>
+                <input type="text" name="address" class="form-control" required />
               </div>
               <div class="form-group">
-                <label>Current Stock</label>
-                <input type="number" name="current_stock" class="form-control" required />
-              </div>
-              <div class="form-group">
-                <label>Unit Price</label>
-                <input type="number" name="unit_price" class="form-control" step="0.01" required />
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" required />
               </div>
             </div>
             <div class="modal-footer">
@@ -100,42 +91,34 @@
       </div>
     </div>
 
-<div class="modal fade" id="editProductsModal" tabindex="-1" role="dialog" aria-labelledby="editProductsModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <form id="editProductsForm">
+        <form id="editCustomerForm">
           <?= csrf_field() ?>
           <div class="modal-header">
-            <h5 class="modal-title" id="editProductsModalLabel"><i class="far fa-edit fa fw"></i> Edit Record</h5>
+            <h5 class="modal-title" id="editCustomerModalLabel"><i class="far fa-edit fa fw"></i> Edit Record</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <input type="hidden" id="product_id" name="product_id">
+            <input type="hidden" id="customer_id" name="customer_id">
             <div class="form-group">
-              <label>Product Name</label>
-              <input type="text" name="product_name" id="product_name" class="form-control" required />
+              <label>Customer Name</label>
+              <input type="text" name="customer_name" id="customer_name" class="form-control" required />
             </div>
             <div class="form-group">
-              <label>Brand</label>
-              <input type="text" name="brand" id="brand" class="form-control" required />
-            <div class="form-group">
-              <label>Category</label>
-              <select name="category_id" id="category_id" class="form-control" required>
-                <option value="">Select Category</option>
-                <?php foreach ($categories as $category): ?>
-                  <option value="<?= $category['category_id'] ?>"><?= $category['category_name'] ?></option>
-                <?php endforeach; ?>
-              </select>
+              <label>Contact Number</label>
+              <input type="text" name="contact_number" id="contact_number" class="form-control" required />
             </div>
             <div class="form-group">
-              <label>Current Stock</label>
-              <input type="number" name="current_stock" id="current_stock" class="form-control" required />
+              <label>Address</label>
+              <input type="text" name="address" id="address" class="form-control" required />
             </div>
             <div class="form-group">
-              <label>Unit Price</label>
-              <input type="number" name="unit_price" id="unit_price" class="form-control" step="0.01" required />
+              <label>Email</label>
+              <input type="email" name="email" id="email" class="form-control" required />
             </div>
           </div>
           <div class="modal-footer">
@@ -154,5 +137,5 @@
 
 <?= $this->section('scripts') ?>
 <script> const baseUrl = "<?= base_url() ?>"; </script>
-<script src="<?= base_url('js/products/products.js') ?>"></script>
+<script src="<?= base_url('js/customers/customers.js') ?>"></script>
 <?= $this->endSection() ?>

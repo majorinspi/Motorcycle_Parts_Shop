@@ -57,5 +57,13 @@ $routes->post('transactions/update', 'Transactions::update');
 $routes->delete('transactions/delete/(:num)', 'Transactions::delete/$1');
 $routes->post('transactions/fetchRecords', 'Transactions::fetchRecords');
 
+// Customers routes
+$routes->get('/customers', 'Customers::index');
+$routes->post('customers/save', 'Customers::save');
+$routes->get('customers/edit/(:segment)', 'Customers::edit/$1');
+$routes->post('customers/update', 'Customers::update');
+$routes->delete('customers/delete/(:num)', 'Customers::delete/$1');
+$routes->post('customers/fetchRecords', 'Customers::fetchRecords');
+
 // Logs routes for admin
 $routes->get('/log', 'Logs::log');
