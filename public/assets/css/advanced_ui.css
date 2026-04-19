@@ -19,6 +19,47 @@
   --navbar-bg: rgba(28, 31, 38, 0.8);
 }
 
+body.light-mode {
+  --bg-gradient-start: #f4f6f9;
+  --bg-gradient-end: #e9ecef;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-card-bg: rgba(255, 255, 255, 0.95);
+  --text-color: #333333;
+  --text-muted: #6c757d;
+  --sidebar-bg: rgba(255, 255, 255, 0.95);
+  --navbar-bg: rgba(255, 255, 255, 0.9);
+}
+
+body.light-mode .wrapper {
+  background: var(--bg-gradient-start) !important;
+}
+body.light-mode .content-header h1,
+body.light-mode .small-box h3,
+body.light-mode .card-title {
+  color: #333 !important;
+  text-shadow: none;
+}
+body.light-mode .small-box p {
+  color: #555 !important;
+}
+body.light-mode table.dataTable thead th {
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #333 !important;
+}
+body.light-mode table.dataTable tbody tr {
+  background: #fff !important;
+}
+body.light-mode .small-box .icon i {
+  color: rgba(0, 0, 0, 0.1) !important;
+}
+body.light-mode .small-box-footer {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+body.light-mode .card-header {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
 body, h1, h2, h3, h4, h5, h6, p, a, div, span {
   font-family: 'Inter', sans-serif !important;
 }
@@ -31,6 +72,8 @@ body {
 .wrapper {
   background: radial-gradient(circle at top right, #2a2d34, var(--bg-gradient-start)) !important;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* -----------------------
@@ -119,6 +162,16 @@ body {
 .content-wrapper {
   background: transparent !important;
   padding-top: 1rem;
+  flex: 1;
+}
+
+.main-footer {
+  background: var(--glass-card-bg) !important;
+  color: var(--text-muted) !important;
+  border-top: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1rem;
 }
 
 .content-header h1 {
@@ -298,13 +351,50 @@ table.dataTable tbody tr td:last-child {
   outline: none !important;
 }
 
+/* DataTables Length Select & Custom Selects */
+.dataTables_wrapper .dataTables_length select,
+.custom-select,
+select.form-control {
+  background-color: rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  padding: 4px 24px 4px 12px !important;
+  height: auto !important;
+}
+.dataTables_wrapper .dataTables_length select:focus,
+.custom-select:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15) !important;
+  outline: none !important;
+}
+
+body.light-mode .dataTables_wrapper .dataTables_length select,
+body.light-mode .custom-select {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Dropdown Option Items */
+select option {
+  background-color: var(--bg-gradient-end) !important;
+  color: #ffffff !important;
+}
+body.light-mode select option {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+}
+
+
 /* -----------------------
    FORM INPUTS
    ----------------------- */
+/* Default / Dark Mode */
 .form-control {
-  background: rgba(0, 0, 0, 0.2) !important;
+  background-color: rgba(0, 0, 0, 0.2) !important;
   border: 1px solid var(--glass-border) !important;
-  color: #fff !important;
+  color: #ffffff !important;
   border-radius: 10px !important;
   padding: 12px 15px !important;
   transition: all 0.3s ease;
@@ -312,11 +402,47 @@ table.dataTable tbody tr td:last-child {
 .form-control:focus {
   border-color: var(--primary-color) !important;
   box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15) !important;
-  background: rgba(0, 0, 0, 0.4) !important;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  color: #ffffff !important;
 }
+
+/* Light Mode Overrides */
+body.light-mode .form-control {
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
+}
+body.light-mode .form-control:focus {
+  background-color: #f8f9fa !important;
+  color: #111111 !important;
+}
+
 .form-control::placeholder {
   color: #6a7080 !important;
 }
+body.light-mode .form-control::placeholder {
+  color: #adb5bd !important;
+}
+
+/* Fix Webkit Autofill for Dark Mode */
+.form-control:-webkit-autofill,
+.form-control:-webkit-autofill:hover, 
+.form-control:-webkit-autofill:focus, 
+.form-control:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #1e222b inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Fix Webkit Autofill for Light Mode */
+body.light-mode .form-control:-webkit-autofill,
+body.light-mode .form-control:-webkit-autofill:hover, 
+body.light-mode .form-control:-webkit-autofill:focus, 
+body.light-mode .form-control:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+    -webkit-text-fill-color: #222222 !important;
+}
+
 
 /* -----------------------
    BUTTONS
@@ -335,6 +461,35 @@ table.dataTable tbody tr td:last-child {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(255, 107, 0, 0.4) !important;
+}
+
+/* -----------------------
+   MODALS
+   ----------------------- */
+.modal-content {
+  background: var(--glass-card-bg) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5) !important;
+  color: var(--text-color) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--glass-border) !important;
+}
+.close {
+  color: var(--text-color) !important;
+  text-shadow: none !important;
+  opacity: 0.8;
+}
+.close:hover {
+  opacity: 1;
 }
 
 /* Custom Scrollbar */

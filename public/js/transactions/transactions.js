@@ -40,8 +40,10 @@ $(document).on('click', '.edit-btn', function () {
     success: function (response) {
         if (response.data) {
             $('#editTransactionModal #product_id').val(response.data.product_id);
+            $('#editTransactionModal #customer_id').val(response.data.customer_id);
             $('#editTransactionModal #transaction_id').val(response.data.transaction_id);
             $('#editTransactionModal #type').val(response.data.type);
+            $('#editTransactionModal #payment_method').val(response.data.payment_method);
             $('#editTransactionModal #quantity').val(response.data.quantity);
             $('#editTransactionModal #date').val(response.data.date);
 
@@ -132,6 +134,12 @@ $(document).ready(function () {
         { data: 'row_number' },
         { data: 'transaction_id', visible: false },
         { data: 'product_name' },
+        { 
+            data: 'customer_name',
+            render: function (data) {
+                return data ? data : '<span class="text-muted">-</span>';
+            }
+        },
         {
             data: 'type',
             render: function (data, type, row) {
@@ -140,6 +148,18 @@ $(document).ready(function () {
             }
         },
         { data: 'quantity' },
+        { 
+            data: 'total_amount',
+            render: function (data) {
+                return data && parseFloat(data) > 0 ? '₱' + parseFloat(data).toFixed(2) : '<span class="text-muted">-</span>';
+            }
+        },
+        { 
+            data: 'payment_method',
+            render: function (data) {
+                return data ? data : '<span class="text-muted">-</span>';
+            }
+        },
         { data: 'date' },
         {
 

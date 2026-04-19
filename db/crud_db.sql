@@ -106,6 +106,15 @@ CREATE TABLE Categories (
     category_name varchar(100) NOT NULL
 );
 
+CREATE TABLE Customers (
+    customer_id int PRIMARY KEY AUTO_INCREMENT,
+    customer_name varchar(100) NOT NULL,
+    contact_number varchar(20)
+    address varchar(200),
+    email varchar(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);   
+
 -- 2. Suppliers to track where stock comes from
 CREATE TABLE Suppliers (
     supplier_id int PRIMARY KEY AUTO_INCREMENT,
@@ -126,10 +135,17 @@ CREATE TABLE Products (
 CREATE TABLE Transactions (
     transaction_id int PRIMARY KEY AUTO_INCREMENT,
     product_id int,
+    customer_id int,
     type ENUM('In', 'Out') NOT NULL,
     quantity int NOT NULL,
+    total_price decimal(10, 2) NOT NULL,
+    payment_method varchar(50) NOT NULL,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id)
+     FOREIGN KEY (product_id) REFERENCES products(product_id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+        ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 --

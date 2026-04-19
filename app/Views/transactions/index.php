@@ -32,14 +32,17 @@
               </div>
             </div>
             <div class="card-body">
-               <table id="example1" class="table table-bordered table-striped table-sm">
+              <table id="example1" class="table table-bordered table-striped table-sm">
                 <thead>
                   <tr>
                     <th>No.</th>
                     <th style="display:none;">transaction_id</th>
                     <th>Product Name</th>
+                    <th>Customer</th>
                     <th>Transaction Type</th>
                     <th>Quantity</th>
+                    <th>Total Amount</th>
+                    <th>Payment</th>
                     <th>Date</th>
                     <th>Actions</th>
                   </tr>
@@ -60,7 +63,7 @@
           <form id="addTransactionForm">
             <?= csrf_field() ?>
             <div class="modal-header">
-              <h5 class="modal-title"><i class="fa fa-plus-circle fa fw"></i>  Add New</h5>
+              <h5 class="modal-title"><i class="fa fa-plus-circle fa fw"></i> Add New</h5>
               <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -77,8 +80,26 @@
                 <label>Transaction Type</label>
                 <select name="type" class="form-control" required>
                   <option value="">Select Type</option>
-                  <option value="In">In</option>
-                  <option value="Out">Out</option>
+                  <option value="In">In (Stock Restock)</option>
+                  <option value="Out">Out (Sale)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Customer (for Sales)</label>
+                <select name="customer_id" class="form-control">
+                  <option value="">Select Customer (Optional)</option>
+                  <?php foreach ($customers as $customer): ?>
+                    <option value="<?= $customer['customer_id'] ?>"><?= $customer['customer_name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Payment Method (for Sales)</label>
+                <select name="payment_method" class="form-control">
+                  <option value="">Select Payment Method (Optional)</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Card">Card</option>
+                  <option value="GCash">GCash</option>
                 </select>
               </div>
               <div class="form-group">
@@ -99,60 +120,80 @@
       </div>
     </div>
 
-<div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <form id="editTransactionForm">
-          <?= csrf_field() ?>
-          <div class="modal-header">
-            <h5 class="modal-title" id="editTransactionModalLabel"><i class="far fa-edit fa fw"></i> Edit Record</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <input type="hidden" id="transaction_id" name="transaction_id">
-            <div class="form-group">
-              <label>Product</label>
-              <select name="product_id" id="product_id" class="form-control" required>
-                <option value="">Select Product</option>
-                <?php foreach ($products as $product): ?>
-                  <option value="<?= $product['product_id'] ?>"><?= $product['product_name'] ?></option>
-                <?php endforeach; ?>
-              </select>
+    <div class="modal fade" id="editTransactionModal" tabindex="-1" role="dialog" aria-labelledby="editTransactionModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form id="editTransactionForm">
+            <?= csrf_field() ?>
+            <div class="modal-header">
+              <h5 class="modal-title" id="editTransactionModalLabel"><i class="far fa-edit fa fw"></i> Edit Record</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <div class="form-group">
-              <label>Transaction Type</label>
-              <select name="type" id="type" class="form-control" required>
-                <option value="">Select Type</option>
-                <option value="In">In</option>
-                <option value="Out">Out</option>
-              </select>
+            <div class="modal-body">
+              <input type="hidden" id="transaction_id" name="transaction_id">
+              <div class="form-group">
+                <label>Product</label>
+                <select name="product_id" id="product_id" class="form-control" required>
+                  <option value="">Select Product</option>
+                  <?php foreach ($products as $product): ?>
+                    <option value="<?= $product['product_id'] ?>"><?= $product['product_name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Transaction Type</label>
+                <select name="type" id="type" class="form-control" required>
+                  <option value="">Select Type</option>
+                  <option value="In">In (Stock Restock)</option>
+                  <option value="Out">Out (Sale)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Customer (for Sales)</label>
+                <select name="customer_id" id="customer_id" class="form-control">
+                  <option value="">Select Customer (Optional)</option>
+                  <?php foreach ($customers as $customer): ?>
+                    <option value="<?= $customer['customer_id'] ?>"><?= $customer['customer_name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Payment Method (for Sales)</label>
+                <select name="payment_method" id="payment_method" class="form-control">
+                  <option value="">Select Payment Method (Optional)</option>
+                  <option value="Cash">Cash</option>
+                  <option value="Card">Card</option>
+                  <option value="GCash">GCash</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Quantity</label>
+                <input type="number" name="quantity" id="quantity" class="form-control" required />
+              </div>
+              <div class="form-group">
+                <label>Date</label>
+                <input type="date" name="date" id="date" class="form-control" required />
+              </div>
             </div>
-            <div class="form-group">
-              <label>Quantity</label>
-              <input type="number" name="quantity" id="quantity" class="form-control" required />
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-times-circle'></i> Cancel</button>
+              <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
             </div>
-            <div class="form-group">
-              <label>Date</label>
-              <input type="date" name="date" id="date" class="form-control" required />
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-times-circle'></i> Cancel</button>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </div>
 <div class="toasts-top-right fixed" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>
 <?= $this->endSection() ?>
 
 
 <?= $this->section('scripts') ?>
-<script> const baseUrl = "<?= base_url() ?>"; </script>
+<script>
+  const baseUrl = "<?= base_url() ?>";
+</script>
 <script src="<?= base_url('js/transactions/transactions.js') ?>"></script>
 <?= $this->endSection() ?>

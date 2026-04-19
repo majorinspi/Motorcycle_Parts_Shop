@@ -14,13 +14,15 @@
 
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <span class="nav-link text-warning font-weight-bold">
-               <i class="fas fa-battery-three-quarters mr-1"></i> System Online
-            </span>
+            <a class="nav-link" href="#" id="theme-toggle" title="Toggle Light/Dark Mode">
+                <i class="fas fa-sun text-warning" id="theme-icon"></i>
+            </a>
+        </li>
+
         </li>
         <li class="nav-item">
             <a class="nav-link" href="#">
-                <?= session()->get('email') ?> 
+                <?= session()->get('email') ?>
                 <i class="far fa-user-circle ml-1 text-warning"></i>
             </a>
         </li>
