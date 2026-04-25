@@ -40,7 +40,7 @@
     <?= $this->renderSection('content') ?>
 
     <footer class="main-footer no-print">
-      <strong>Copyright &copy; 2025 <a href="#">Glenn IT Solutions</a> </strong>
+      <strong>Copyright &copy; 2025 <a href="#">AVENGERS ASSEMBLE</a> </strong>
       All rights reserved.
       <div class="float-right d-none d-sm-inline-block">
         <b>Version</b> CI4.v1

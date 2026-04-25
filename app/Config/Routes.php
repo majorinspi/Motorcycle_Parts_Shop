@@ -65,5 +65,12 @@ $routes->post('customers/update', 'Customers::update');
 $routes->delete('customers/delete/(:num)', 'Customers::delete/$1');
 $routes->post('customers/fetchRecords', 'Customers::fetchRecords');
 
+// Inventory route
+$routes->get('/inventory', 'Inventory::index');
+
+// POS route
+$routes->get('/pos', 'Pos::index');
+$routes->post('pos/checkout', 'Pos::checkout');
+
 // Logs routes for admin
 $routes->get('/log', 'Logs::log');

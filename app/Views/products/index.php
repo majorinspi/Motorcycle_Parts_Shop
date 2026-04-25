@@ -120,6 +120,7 @@
             <div class="form-group">
               <label>Brand</label>
               <input type="text" name="brand" id="brand" class="form-control" required />
+            </div>
             <div class="form-group">
               <label>Category</label>
               <select name="category_id" id="category_id" class="form-control" required>

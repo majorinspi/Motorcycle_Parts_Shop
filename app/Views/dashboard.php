@@ -76,11 +76,57 @@
         </div>
       </div>
 
+      <!-- Monthly Stats Row -->
+      <div class="row mt-4">
+        <div class="col-lg-4 col-12">
+          <div class="small-box bg-purple glass-card border-0" style="background: linear-gradient(135deg, #6f42c1, #4e2996); color: white;">
+            <div class="inner">
+              <h3>₱<?= isset($monthlyRevenue) ? number_format($monthlyRevenue, 2) : '0.00' ?></h3>
+              <p>Monthly Revenue</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-calendar-alt text-white-50"></i>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-lg-4 col-12">
+          <div class="small-box glass-card border-0" style="background: linear-gradient(135deg, #17a2b8, #0b6b7a); color: white;">
+            <div class="inner">
+              <h3><?= isset($monthlyInventorySales) ? number_format($monthlyInventorySales) : '0' ?></h3>
+              <p>Monthly Inventory Sold (Items)</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-shopping-cart text-white-50"></i>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-lg-4 col-12">
+          <div class="small-box glass-card border-0" style="background: linear-gradient(135deg, #6c757d, #343a40); color: white;">
+            <div class="inner">
+              <h3><?= isset($totalCurrentStock) ? number_format($totalCurrentStock) : '0' ?></h3>
+              <p>Total Unsold / Current Inventory (Items)</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-warehouse text-white-50"></i>
+            </div>
+          </div>
+        </div>
+      </div>
 
-
-      <?= $this->section('scripts') ?>
+      <div class="row mt-4">
+        <div class="col-12">
+          <div class="card glass-card border-0">
+            <div class="card-header border-0">
+              <h3 class="card-title text-white">Revenue Overview</h3>
+            </div>
+            <div class="card-body">
+              <canvas id="revenueChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>      <?= $this->section('scripts') ?>
       <script>
         $(function() {
           // Advanced Chart UI initialization

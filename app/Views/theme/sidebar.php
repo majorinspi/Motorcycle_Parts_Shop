@@ -17,6 +17,13 @@
           </a>
         </li>
 
+        <!-- Monthly Inventory -->
+        <li class="nav-item">
+          <a href="<?= base_url('inventory') ?>" class="nav-link <?= is_active(1, 'inventory') ?>">
+            <i class="nav-icon fas fa-boxes text-info"></i>
+            <p>Monthly Inventory</p>
+          </a>
+        </li>
         <!-- POS -->
         <li class="nav-item">
           <a href="<?= base_url('pos') ?>" class="nav-link <?= is_active(1, 'pos') ?>">
