@@ -43,6 +43,7 @@ $(document).on('click', '.edit-btn', function () {
             $('#editProductsModal #product_id').val(response.data.product_id);
             $('#editProductsModal #brand').val(response.data.brand);
             $('#editProductsModal #category_id').val(response.data.category_id);
+            $('#editProductsModal #supplier_id').val(response.data.supplier_id);
             $('#editProductsModal #current_stock').val(response.data.current_stock);
             $('#editProductsModal #unit_price').val(response.data.unit_price);
 
@@ -114,6 +115,38 @@ $(document).on('click', '.deleteProductBtn', function () {
     }
 });
 
+$(document).on('click', '.restock-btn', function() {
+    const productId = $(this).data('product_id');
+    const productName = $(this).data('product_name');
+    
+    $('#restock_product_id').val(productId);
+    $('#restock_product_name').val(productName);
+    
+    $('#restockRequestModal').modal('show');
+});
+
+$('#restockRequestForm').on('submit', function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: baseUrl + 'products/requestRestock',
+        method: 'POST',
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function (response) {
+            if (response.status === 'success') {
+                $('#restockRequestModal').modal('hide');
+                $('#restockRequestForm')[0].reset();
+                showToast('success', response.message);
+            } else {
+                showToast('error', response.message || 'Failed to send restock request.');
+            }
+        },
+        error: function () {
+            showToast('error', 'An error occurred while sending the request.');
+        }
+    });
+});
+
 $(document).ready(function () {
     const $table = $('#example1');
 
@@ -154,10 +187,13 @@ $(document).ready(function () {
         searchable: false,
         render: function (data, type, row) {
             return `
-            <button class="btn btn-sm btn-warning edit-btn" data-product_id="${row.product_id}">
+            <button class="btn btn-sm btn-info restock-btn" data-product_id="${row.product_id}" data-product_name="${row.product_name}" title="Request Restock">
+                <i class="fas fa-truck-loading"></i>
+            </button>
+            <button class="btn btn-sm btn-warning edit-btn" data-product_id="${row.product_id}" title="Edit">
                 <i class="far fa-edit"></i>
             </button>
-            <button class="btn btn-sm btn-danger deleteProductBtn" data-product_id="${row.product_id}">
+            <button class="btn btn-sm btn-danger deleteProductBtn" data-product_id="${row.product_id}" title="Delete">
                 <i class="fas fa-trash-alt"></i>
             </button>
             `;

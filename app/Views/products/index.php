@@ -83,6 +83,15 @@
                 </select>
               </div>
               <div class="form-group">
+                <label>Supplier (Optional)</label>
+                <select name="supplier_id" class="form-control">
+                  <option value="">Select Supplier</option>
+                  <?php foreach ($suppliers as $supplier): ?>
+                    <option value="<?= $supplier['supplier_id'] ?>"><?= $supplier['supplier_name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
                 <label>Current Stock</label>
                 <input type="number" name="current_stock" class="form-control" required />
               </div>
@@ -131,6 +140,15 @@
               </select>
             </div>
             <div class="form-group">
+              <label>Supplier (Optional)</label>
+              <select name="supplier_id" id="supplier_id" class="form-control">
+                <option value="">Select Supplier</option>
+                <?php foreach ($suppliers as $supplier): ?>
+                  <option value="<?= $supplier['supplier_id'] ?>"><?= $supplier['supplier_name'] ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="form-group">
               <label>Current Stock</label>
               <input type="number" name="current_stock" id="current_stock" class="form-control" required />
             </div>
@@ -147,6 +165,46 @@
       </div>
     </div>
   </div>
+  
+  <!-- ✅ Restock Request Modal -->
+  <div class="modal fade" id="restockRequestModal" tabindex="-1" role="dialog" aria-labelledby="restockRequestModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form id="restockRequestForm">
+            <?= csrf_field() ?>
+            <div class="modal-header bg-info text-white">
+              <h5 class="modal-title"><i class="fas fa-truck-loading"></i> Request Restock</h5>
+              <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <input type="hidden" id="restock_product_id" name="product_id">
+              <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="restock_product_name" class="form-control" readonly />
+              </div>
+              <div class="form-group">
+                <label>Select Supplier</label>
+                <select name="supplier_id" id="restock_supplier_id" class="form-control" required>
+                  <option value="">-- Choose Supplier --</option>
+                  <?php foreach ($suppliers as $supplier): ?>
+                    <option value="<?= $supplier['supplier_id'] ?>"><?= $supplier['supplier_name'] ?></option>
+                  <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Quantity to Request</label>
+                <input type="number" name="quantity" class="form-control" min="1" required />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-info"><i class="fa fa-paper-plane"></i> Send Request</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    
 </section>
 </div>
 <div class="toasts-top-right fixed" style="position: fixed; top: 1rem; right: 1rem; z-index: 9999;"></div>

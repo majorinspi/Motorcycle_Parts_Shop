@@ -66,7 +66,7 @@
               <button class="btn btn-sm btn-danger float-right" onclick="clearCart()"><i class="fas fa-trash"></i> Clear</button>
             </div>
             <div class="card-body p-3 d-flex flex-column">
-              <div id="cartItems" class="flex-grow-1 mb-3" style="min-height:30vh; max-height:35vh; overflow-y:auto; overflow-x:hidden;">
+              <div id="cartItems" class="flex-grow-1 mb-3" style="min-height:30vh; max-height:45vh; overflow-y:auto; overflow-x:hidden;">
                 <!-- Cart items will be injected here -->
                 <div class="text-center text-muted mt-5" id="emptyCartMsg">
                   <i class="fas fa-cart-arrow-down fa-3x mb-3"></i>
@@ -86,34 +86,8 @@
                   <h4 class="text-warning font-weight-bold" id="totalDisplay">₱0.00</h4>
                 </div>
 
-                <div class="form-group mb-2">
-                  <select id="customerId" class="form-control bg-dark text-white border-secondary">
-                    <option value="">Walk-in Customer</option>
-                    <?php foreach($customers as $c): ?>
-                      <option value="<?= $c['customer_id'] ?>"><?= esc($c['customer_name']) ?></option>
-                    <?php endforeach; ?>
-                  </select>
-                </div>
-
-                <div class="form-group mb-2">
-                  <select id="paymentMethod" class="form-control bg-dark text-white border-secondary">
-                    <option value="Cash">Cash</option>
-                    <option value="Card">Card</option>
-                    <option value="GCash">GCash</option>
-                  </select>
-                </div>
-                
-                <div class="form-group mb-3">
-                  <input type="number" id="amountPaid" class="form-control bg-dark text-white border-secondary form-control-lg text-right text-success font-weight-bold" placeholder="Amount Paid (₱)" onkeyup="calculateChange()">
-                </div>
-
-                <div class="d-flex justify-content-between mb-3 align-items-center">
-                  <h5 class="text-light m-0">Change:</h5>
-                  <h4 class="text-success m-0 font-weight-bold" id="changeDisplay">₱0.00</h4>
-                </div>
-
-                <button class="btn btn-success btn-block btn-lg font-weight-bold" onclick="processCheckout()" id="checkoutBtn" disabled>
-                  <i class="fas fa-check-circle"></i> Complete Checkout
+                <button class="btn btn-primary btn-block btn-lg font-weight-bold" onclick="openPaymentModal()" id="proceedBtn" disabled>
+                  <i class="fas fa-arrow-right"></i> Proceed to Payment
                 </button>
               </div>
             </div>
@@ -123,6 +97,76 @@
     </div>
   </section>
 </div>
+
+<!-- Payment Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content bg-dark text-white border-secondary">
+      <div class="modal-header border-secondary">
+        <h5 class="modal-title font-weight-bold" id="paymentModalLabel"><i class="fas fa-money-bill-wave text-success"></i> Checkout & Payment</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <!-- Ordered Items Summary -->
+          <div class="col-md-6 border-right border-secondary">
+            <h6 class="text-warning mb-3 border-bottom border-secondary pb-2">Ordered Items Summary</h6>
+            <div id="checkoutItemsList" style="max-height: 250px; overflow-y: auto; padding-right: 10px;">
+              <!-- Ordered items will be injected here -->
+            </div>
+            <div class="d-flex justify-content-between mt-3 pt-2 border-top border-secondary">
+              <h5 class="font-weight-bold">Total Due:</h5>
+              <h5 class="font-weight-bold text-warning" id="modalTotalDisplay">₱0.00</h5>
+            </div>
+          </div>
+          
+          <!-- Payment Details -->
+          <div class="col-md-6">
+            <h6 class="text-info mb-3 border-bottom border-secondary pb-2">Payment Details</h6>
+            
+            <div class="form-group mb-3">
+              <label class="small text-muted">Customer</label>
+              <select id="customerId" class="form-control bg-dark text-white border-secondary">
+                <option value="">Walk-in Customer</option>
+                <?php foreach($customers as $c): ?>
+                  <option value="<?= $c['customer_id'] ?>"><?= esc($c['customer_name']) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="form-group mb-3">
+              <label class="small text-muted">Payment Method</label>
+              <select id="paymentMethod" class="form-control bg-dark text-white border-secondary">
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+                <option value="GCash">GCash</option>
+              </select>
+            </div>
+            
+            <div class="form-group mb-3">
+              <label class="small text-muted">Amount Paid (₱)</label>
+              <input type="number" id="amountPaid" class="form-control bg-dark text-white border-secondary form-control-lg text-right text-success font-weight-bold" placeholder="0.00" onkeyup="calculateChange()">
+            </div>
+
+            <div class="d-flex justify-content-between mb-3 align-items-center" style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px;">
+              <h5 class="text-light m-0">Change:</h5>
+              <h4 class="text-success m-0 font-weight-bold" id="changeDisplay">₱0.00</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer border-secondary">
+        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success font-weight-bold" onclick="processCheckout()" id="checkoutBtn">
+          <i class="fas fa-check-circle"></i> Complete Transaction
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?= $this->endSection() ?>
 
 <?= $this->section('scripts') ?>
@@ -193,10 +237,10 @@
 
     if (cart.length === 0) {
       $('#emptyCartMsg').show();
-      $('#checkoutBtn').prop('disabled', true);
+      $('#proceedBtn').prop('disabled', true);
     } else {
       $('#emptyCartMsg').hide();
-      $('#checkoutBtn').prop('disabled', false);
+      $('#proceedBtn').prop('disabled', false);
 
       cart.forEach(item => {
         let subtotal = item.price * item.quantity;
@@ -234,7 +278,41 @@
     
     // Store total for checkout calculations
     $('#totalDisplay').data('total', total);
-    calculateChange();
+  }
+
+  function openPaymentModal() {
+    if (cart.length === 0) return;
+    
+    // Render ordered items in modal
+    let itemsHtml = '';
+    cart.forEach(item => {
+      let subtotal = item.price * item.quantity;
+      itemsHtml += `
+        <div class="d-flex justify-content-between mb-2 pb-2 border-bottom border-secondary" style="font-size: 0.95rem;">
+          <div>
+            <div class="font-weight-bold">${item.name}</div>
+            <div class="text-muted small">${item.quantity} x ₱${item.price.toFixed(2)}</div>
+          </div>
+          <div class="font-weight-bold text-success d-flex align-items-center">₱${subtotal.toFixed(2)}</div>
+        </div>
+      `;
+    });
+    
+    $('#checkoutItemsList').html(itemsHtml);
+    
+    // Set total
+    let total = parseFloat($('#totalDisplay').data('total')) || 0;
+    $('#modalTotalDisplay').text('₱' + total.toFixed(2));
+    
+    // Reset payment fields
+    $('#amountPaid').val('');
+    $('#changeDisplay').text('₱0.00').removeClass('text-danger').addClass('text-success');
+    
+    // Show modal
+    $('#paymentModal').modal('show');
+    
+    // Focus on amount paid field after modal opens
+    setTimeout(() => { $('#amountPaid').focus(); }, 500);
   }
 
   function calculateChange() {
@@ -280,20 +358,20 @@
       success: function(response) {
         if (response.status === 'success') {
           toastr.success(response.message);
+          $('#paymentModal').modal('hide');
           cart = [];
-          $('#amountPaid').val('');
           renderCart();
           // Reload page after a delay so they see success msg
           setTimeout(() => { location.reload(); }, 1500);
         } else {
           toastr.error(response.message || 'Checkout failed');
-          $('#checkoutBtn').prop('disabled', false).html('<i class="fas fa-check-circle"></i> Complete Checkout');
+          $('#checkoutBtn').prop('disabled', false).html('<i class="fas fa-check-circle"></i> Complete Transaction');
         }
       },
       error: function(xhr) {
         toastr.error('Server error occurred during checkout.');
         console.error(xhr.responseText);
-        $('#checkoutBtn').prop('disabled', false).html('<i class="fas fa-check-circle"></i> Complete Checkout');
+        $('#checkoutBtn').prop('disabled', false).html('<i class="fas fa-check-circle"></i> Complete Transaction');
       }
     });
   }

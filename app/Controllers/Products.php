@@ -7,12 +7,15 @@ use CodeIgniter\Controller;
 use App\Models\LogModel;
 use App\Models\ProductsModel;
 use App\Models\CategoriesModel;
+use App\Models\SuppliersModel;
 
 class Products extends Controller
 {
     public function index(){
         $model = new ProductsModel();
         $categoryModel = new CategoriesModel();
+        $supplierModel = new SuppliersModel();
+        
         $categoryId = $this->request->getGet('category_id');
         
         if ($categoryId) {
@@ -23,6 +26,7 @@ class Products extends Controller
         }
         
         $data['categories'] = $categoryModel->findAll();
+        $data['suppliers'] = $supplierModel->findAll();
         return view('products/index', $data);
     }
 
@@ -30,6 +34,7 @@ class Products extends Controller
         $product_name = $this->request->getPost('product_name');
         $brand = $this->request->getPost('brand');
         $category_id = $this->request->getPost('category_id');
+        $supplier_id = $this->request->getPost('supplier_id');
         $current_stock = $this->request->getPost('current_stock');
         $unit_price = $this->request->getPost('unit_price');
         $productsModel = new \App\Models\ProductsModel();
@@ -40,6 +45,7 @@ class Products extends Controller
             'product_name' => $product_name,
             'brand' => $brand,
             'category_id' => $category_id,
+            'supplier_id' => empty($supplier_id) ? null : $supplier_id,
             'current_stock' => $current_stock,
             'unit_price' => $unit_price
         ];
@@ -73,6 +79,7 @@ class Products extends Controller
         $product_name = $this->request->getPost('product_name');
         $brand = $this->request->getPost('brand');
         $category_id = $this->request->getPost('category_id');  
+        $supplier_id = $this->request->getPost('supplier_id');
         $current_stock = $this->request->getPost('current_stock');
         $unit_price = $this->request->getPost('unit_price');
 
@@ -84,6 +91,7 @@ class Products extends Controller
             'product_name' => $product_name,
             'brand' => $brand,
             'category_id' => $category_id,
+            'supplier_id' => empty($supplier_id) ? null : $supplier_id,
             'current_stock' => $current_stock,
             'unit_price' => $unit_price
         ];
@@ -124,86 +132,117 @@ class Products extends Controller
         $model = new ProductsModel();
         $product = $model->find($product_id); // Fetch product by ID
 
-    if ($product) {
-        return $this->response->setJSON(['data' => $product]); // Return product data as JSON
-    } else {
-        return $this->response->setStatusCode(404)->setJSON(['error' => 'Product not found']);
+        if ($product) {
+            return $this->response->setJSON(['data' => $product]); // Return product data as JSON
+        } else {
+            return $this->response->setStatusCode(404)->setJSON(['error' => 'Product not found']);
+        }
     }
-}
 
-public function delete($product_id = null)
-{
-    $db = \Config\Database::connect();
-    $model = new ProductsModel();
-    $logModel = new LogModel();
+    public function delete($product_id = null)
+    {
+        $db = \Config\Database::connect();
+        $model = new ProductsModel();
+        $logModel = new LogModel();
 
-    try {
-        $product = $model->find($product_id);
+        try {
+            $product = $model->find($product_id);
 
-        if (!$product) {
+            if (!$product) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Product not found.'
+                ]);
+            }
+
+            //  delete from transactions FIRST
+            $db->table('transactions')
+               ->where('product_id', $product_id)
+               ->delete();
+            
+            // Delete restock requests associated with the product
+            $db->table('restock_requests')
+               ->where('product_id', $product_id)
+               ->delete();
+
+            //  delete product
+            $model->delete($product_id);
+
+            $logModel->addLog('Delete product', 'DELETED');
+
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Product deleted successfully.'
+            ]);
+
+        } catch (\Throwable $e) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Product not found.'
+                'message' => 'Delete failed.',
+                'error' => $e->getMessage()
             ]);
         }
+    }
 
-        //  delete from transactions FIRST
-        $db->table('transactions')
-           ->where('product_id', $product_id)
-           ->delete();
+    public function requestRestock()
+    {
+        $productId = $this->request->getPost('product_id');
+        $supplierId = $this->request->getPost('supplier_id');
+        $quantity = $this->request->getPost('quantity');
 
-        // delete from other related tables (if any)
-        // $db->table('other_table')->where('product_id', $product_id)->delete();
+        if (empty($productId) || empty($supplierId) || empty($quantity) || $quantity <= 0) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid restock request data. Please check supplier and quantity.']);
+        }
 
-        //  delete product
-        $model->delete($product_id);
+        $restockModel = new \App\Models\RestockRequestsModel();
+        $logModel = new LogModel();
 
-        $logModel->addLog('Delete product', 'DELETED');
+        $data = [
+            'product_id' => $productId,
+            'supplier_id' => $supplierId,
+            'quantity_requested' => $quantity,
+            'status' => 'Pending',
+            'request_date' => date('Y-m-d H:i:s')
+        ];
+
+        if ($restockModel->insert($data)) {
+            $logModel->addLog('Requested Restock for product ID: ' . $productId, 'ADD');
+            return $this->response->setJSON(['status' => 'success', 'message' => 'Restock request sent to supplier successfully!']);
+        } else {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to send restock request.']);
+        }
+    }
+
+    public function fetchRecords()
+    {
+        $request = service('request');
+        $model = new \App\Models\ProductsModel();
+        $categoryId = $request->getGet('category_id');
+
+        $start = $request->getPost('start') ?? 0;
+        $length = $request->getPost('length') ?? 10;
+        $searchValue = $request->getPost('search')['value'] ?? '';
+
+        if ($categoryId) {
+            $totalRecords = $model->where('category_id', $categoryId)->countAllResults();
+        } else {
+            $totalRecords = $model->countAll();
+        }
+        
+        $result = $model->getRecords($start, $length, $searchValue, $categoryId);
+
+        $data = [];
+        $counter = $start + 1;
+        foreach ($result['data'] as $row) {
+            $row['row_number'] = $counter++;
+            $data[] = $row;
+        }
 
         return $this->response->setJSON([
-            'success' => true,
-            'message' => 'Product deleted successfully.'
-        ]);
-
-    } catch (\Throwable $e) {
-        return $this->response->setJSON([
-            'success' => false,
-            'message' => 'Delete failed.',
-            'error' => $e->getMessage()
+            'draw' => intval($request->getPost('draw')),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $result['filtered'],
+            'data' => $data,
         ]);
     }
-}
-public function fetchRecords()
-{
-    $request = service('request');
-    $model = new \App\Models\ProductsModel();
-    $categoryId = $request->getGet('category_id');
-
-    $start = $request->getPost('start') ?? 0;
-    $length = $request->getPost('length') ?? 10;
-    $searchValue = $request->getPost('search')['value'] ?? '';
-
-    if ($categoryId) {
-        $totalRecords = $model->where('category_id', $categoryId)->countAllResults();
-    } else {
-        $totalRecords = $model->countAll();
-    }
-    
-    $result = $model->getRecords($start, $length, $searchValue, $categoryId);
-
-    $data = [];
-    $counter = $start + 1;
-    foreach ($result['data'] as $row) {
-        $row['row_number'] = $counter++;
-        $data[] = $row;
-    }
-
-    return $this->response->setJSON([
-        'draw' => intval($request->getPost('draw')),
-        'recordsTotal' => $totalRecords,
-        'recordsFiltered' => $result['filtered'],
-        'data' => $data,
-    ]);
-}
-
 }
