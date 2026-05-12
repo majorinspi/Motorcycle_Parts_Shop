@@ -361,8 +361,12 @@
           $('#paymentModal').modal('hide');
           cart = [];
           renderCart();
-          // Reload page after a delay so they see success msg
-          setTimeout(() => { location.reload(); }, 1500);
+          
+          if (response.redirect) {
+             window.location.href = response.redirect;
+          } else {
+             setTimeout(() => { location.reload(); }, 1500);
+          }
         } else {
           toastr.error(response.message || 'Checkout failed');
           $('#checkoutBtn').prop('disabled', false).html('<i class="fas fa-check-circle"></i> Complete Transaction');

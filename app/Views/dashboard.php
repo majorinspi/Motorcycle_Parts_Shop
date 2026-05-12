@@ -138,7 +138,7 @@
           gradientStroke.addColorStop(1, 'rgba(255, 107, 0, 0.1)');
 
           var salesChartData = {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            labels: <?= isset($chartLabels) ? $chartLabels : "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']" ?>,
             datasets: [{
               label: 'Revenue (₱)',
               backgroundColor: gradientStroke,
@@ -149,7 +149,7 @@
               pointHoverRadius: 6,
               pointHoverBackgroundColor: '#fff',
               pointHoverBorderColor: '#ff6b00',
-              data: [15000, 22000, 18500, 30000, 28000, 45000, 38000],
+              data: <?= isset($chartData) ? $chartData : "[0, 0, 0, 0, 0, 0, 0]" ?>,
               fill: true
             }]
           }

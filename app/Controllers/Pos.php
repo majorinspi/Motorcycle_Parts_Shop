@@ -83,7 +83,45 @@ class Pos extends Controller
             return $this->response->setJSON(['status' => 'error', 'message' => 'Checkout failed. Please try again.']);
         }
 
+        session()->setFlashdata('receipt_data', [
+            'cart' => $cart,
+            'total' => $totalAmount,
+            'paid' => $amountPaid,
+            'change' => $amountPaid - $totalAmount,
+            'customer_id' => $customerId,
+            'payment_method' => $paymentMethod,
+            'date' => date('Y-m-d H:i:s')
+        ]);
+
         $logModel->addLog('POS Checkout completed. Total: ₱' . number_format($totalAmount, 2), 'ADD');
-        return $this->response->setJSON(['status' => 'success', 'message' => 'Transaction successful!']);
+        return $this->response->setJSON(['status' => 'success', 'message' => 'Transaction successful!', 'redirect' => base_url('pos/receipt')]);
+    }
+
+    public function receipt()
+    {
+        if (!session()->get('user_id')) {
+            return redirect()->to('/login');
+        }
+
+        $receiptData = session()->getFlashdata('receipt_data');
+        if (!$receiptData) {
+            return redirect()->to('/pos');
+        }
+
+        $data['receipt'] = $receiptData;
+        $data['customer_name'] = 'Walk-in Customer';
+
+        if (!empty($receiptData['customer_id'])) {
+            $customersModel = new CustomersModel();
+            $customer = $customersModel->find($receiptData['customer_id']);
+            if ($customer) {
+                $data['customer_name'] = $customer['customer_name'];
+            }
+        }
+
+        // Keep it in flashdata in case of refresh (optional, but good for printing)
+        session()->setFlashdata('receipt_data', $receiptData);
+
+        return view('pos/receipt', $data);
     }
 }

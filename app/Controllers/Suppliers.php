@@ -28,9 +28,9 @@ class Suppliers extends Controller
 
         if ($suppliersModel->insert($data)) {
             $logModel->addLog('New Supplier has been added: ' . $supplier_name, 'ADD');
-            return $this->response->setJSON(['status' => 'success']);
+            return $this->response->setJSON(['success' => true, 'message' => 'Supplier has been added successfully.']);
         } else {
-            return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to save category']);
+            return $this->response->setJSON(['success' => false, 'message' => 'Failed to save supplier.']);
         }
     }
 
@@ -50,7 +50,7 @@ class Suppliers extends Controller
         $updated = $model->update($supplierId, $userData);
 
         if ($updated) {
-            $logModel->addLog('New Supplier has been updated: ' . $supplier_name, 'UPDATED');
+            $logModel->addLog('Supplier has been updated: ' . $supplier_name, 'UPDATED');
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Supplier updated successfully.'

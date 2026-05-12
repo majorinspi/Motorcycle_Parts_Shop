@@ -24,8 +24,9 @@ class SuppliersModel extends Model
 
         // Clone builder for filtered count before applying limit
         $filteredBuilder = clone $builder;
-        $filteredRecords = $filteredBuilder->countAllResults();
+        $filteredRecords = $filteredBuilder->countAllResults(false);
 
+        $builder->orderBy('supplier_name', 'ASC');
         $builder->limit($length, $start);
         $data = $builder->get()->getResultArray();
 

@@ -14,7 +14,7 @@ $('#addSupplierForm').on('submit', function (e) {
         data: $(this).serialize(),
         dataType: 'json',
         success: function (response) {
-            if (response.status === 'success') {
+            if (response.success) {
                 $('#AddNewModal').modal('hide');
                 $('#addSupplierForm')[0].reset();
                 showToast('success', 'Supplier added successfully!');

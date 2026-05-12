@@ -49,6 +49,20 @@ class Dashboard extends BaseController
         $totalStockQuery = $productsModel->selectSum('current_stock')->first();
         $totalCurrentStock = $totalStockQuery && $totalStockQuery['current_stock'] ? $totalStockQuery['current_stock'] : 0;
 
+        // Revenue chart data (Last 7 days)
+        $chartLabels = [];
+        $chartData = [];
+        for ($i = 6; $i >= 0; $i--) {
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $chartLabels[] = date('D', strtotime($date));
+            
+            $dayRevenueQuery = $transactionsModel->selectSum('total_amount')
+                ->where('type', 'Out')
+                ->where('DATE(date)', $date)
+                ->first();
+            $chartData[] = $dayRevenueQuery && $dayRevenueQuery['total_amount'] ? (float)$dayRevenueQuery['total_amount'] : 0;
+        }
+
         $data = [
             'activeCatalogCount' => $activeCatalogCount,
             'criticalLowStockCount' => $criticalLowStockCount,
@@ -56,6 +70,8 @@ class Dashboard extends BaseController
             'monthlyRevenue' => $monthlyRevenue,
             'monthlyInventorySales' => $monthlyInventorySales,
             'totalCurrentStock' => $totalCurrentStock,
+            'chartLabels' => json_encode($chartLabels),
+            'chartData' => json_encode($chartData),
         ];
 
         return view('dashboard', $data);

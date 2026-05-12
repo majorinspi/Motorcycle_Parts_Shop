@@ -47,6 +47,7 @@ $routes->get('products/edit/(:segment)', 'Products::edit/$1');
 $routes->post('products/update', 'Products::update');
 $routes->delete('products/delete/(:num)', 'Products::delete/$1');
 $routes->post('products/fetchRecords', 'Products::fetchRecords');
+$routes->post('products/requestRestock', 'Products::requestRestock');
    
 
 // Transaction routes
@@ -71,6 +72,7 @@ $routes->get('/inventory', 'Inventory::index');
 // POS route
 $routes->get('/pos', 'Pos::index');
 $routes->post('pos/checkout', 'Pos::checkout');
+$routes->get('pos/receipt', 'Pos::receipt');
 
 // Logs routes for admin
 $routes->get('/log', 'Logs::log');
