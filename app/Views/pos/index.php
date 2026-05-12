@@ -253,9 +253,9 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <button class="btn btn-xs btn-outline-secondary" onclick="updateQuantity(${item.product_id}, -1)"><i class="fas fa-minus style="color: #7f7f7f;></i></button>
-                <span class="mx-2 font-weight-bold" style= "color: #7f7f7f;">${item.quantity}</span>
-                <button class="btn btn-xs btn-outline-secondary" onclick="updateQuantity(${item.product_id}, 1)"><i class="fas fa-plus style="color: #7f7f7f;></i></button>
+                <button class="btn btn-xs btn-outline-secondary" onclick="updateQuantity(${item.product_id}, -1)"><i class="fas fa-minus" style="color: #7f7f7f;"></i></button>
+                <span class="mx-2 font-weight-bold" style="color: #7f7f7f;">${item.quantity}</span>
+                <button class="btn btn-xs btn-outline-secondary" onclick="updateQuantity(${item.product_id}, 1)"><i class="fas fa-plus" style="color: #7f7f7f;"></i></button>
               </div>
               <div class="d-flex align-items-center">
                 <span class="mr-3 font-weight-bold text-success">₱${subtotal.toFixed(2)}</span>

@@ -97,9 +97,9 @@
     
     <div class="divider"></div>
     
-    <p style="font-size: 14px; margin: 5px 0;">Date: <?= esc($receipt['date']) ?></p>
+    <p style="font-size: 14px; margin: 5px 0;">Date: <?= esc($receipt['date'] ?? date('Y-m-d H:i:s')) ?></p>
     <p style="font-size: 14px; margin: 5px 0;">Customer: <?= esc($customer_name) ?></p>
-    <p style="font-size: 14px; margin: 5px 0;">Payment Method: <?= esc($receipt['payment_method']) ?></p>
+    <p style="font-size: 14px; margin: 5px 0;">Payment Method: <?= esc($receipt['payment_method'] ?? 'Cash') ?></p>
 
     <div class="divider"></div>
 
@@ -113,9 +113,9 @@
             </tr>
         </thead>
         <tbody>
-            <?php foreach($receipt['cart'] as $item): ?>
+            <?php foreach($receipt['cart'] ?? [] as $item): ?>
             <tr>
-                <td><?= esc($item['name']) ?></td>
+                <td><?= esc($item['name'] ?? '') ?></td>
                 <td class="text-right"><?= $item['quantity'] ?></td>
                 <td class="text-right">₱<?= number_format($item['price'], 2) ?></td>
                 <td class="text-right">₱<?= number_format($item['price'] * $item['quantity'], 2) ?></td>

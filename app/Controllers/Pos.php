@@ -39,8 +39,10 @@ class Pos extends Controller
         $cart = $this->request->getPost('cart'); // JSON string
         $customerId = $this->request->getPost('customer_id');
         $paymentMethod = $this->request->getPost('payment_method');
-        $amountPaid = $this->request->getPost('amount_paid');
-        $totalAmount = $this->request->getPost('total_amount');
+        $amountPaid = floatval($this->request->getPost('amount_paid'));
+        $totalAmount = floatval($this->request->getPost('total_amount'));
+
+        $paymentMethod = empty($paymentMethod) ? 'Cash' : $paymentMethod;
 
         if (empty($cart)) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Cart is empty.']);
@@ -48,7 +50,25 @@ class Pos extends Controller
 
         if (is_string($cart)) {
             $cart = json_decode($cart, true);
+            if ($cart === null || !is_array($cart)) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid cart data.']);
+            }
         }
+
+        $computedTotal = 0;
+        foreach ($cart as $item) {
+            $computedTotal += floatval($item['price']) * intval($item['quantity']);
+        }
+
+        if ($computedTotal <= 0) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Cart total must be greater than zero.']);
+        }
+
+        if ($amountPaid < $computedTotal) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Amount paid is less than total amount.']);
+        }
+
+        $totalAmount = $computedTotal;
 
         $db = \Config\Database::connect();
         $db->transStart();
