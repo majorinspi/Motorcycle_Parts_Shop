@@ -20,7 +20,7 @@ $('#addTransactionForm').on('submit', function (e) {
                 showToast('success', 'Transaction added successfully!');
                 setTimeout(() => {
                     location.reload();
-                }, 1000); 
+                }, 1000);
             } else {
                 showToast('error', response.message || 'Failed to add transaction.');
             }
@@ -32,37 +32,37 @@ $('#addTransactionForm').on('submit', function (e) {
 });
 
 $(document).on('click', '.edit-btn', function () {
-   const transactionId = $(this).data('transaction_id'); 
-   $.ajax({
-    url: baseUrl + 'transactions/edit/' + transactionId,
-    method: 'GET',
-    dataType: 'json',
-    success: function (response) {
-        if (response.data) {
-            $('#editTransactionModal #product_id').val(response.data.product_id);
-            $('#editTransactionModal #customer_id').val(response.data.customer_id);
-            $('#editTransactionModal #transaction_id').val(response.data.transaction_id);
-            $('#editTransactionModal #type').val(response.data.type);
-            $('#editTransactionModal #payment_method').val(response.data.payment_method);
-            $('#editTransactionModal #quantity').val(response.data.quantity);
-            $('#editTransactionModal #date').val(response.data.date);
+    const transactionId = $(this).data('transaction_id');
+    $.ajax({
+        url: baseUrl + 'transactions/edit/' + transactionId,
+        method: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            if (response.data) {
+                $('#editTransactionModal #product_id').val(response.data.product_id);
+                $('#editTransactionModal #customer_id').val(response.data.customer_id);
+                $('#editTransactionModal #transaction_id').val(response.data.transaction_id);
+                $('#editTransactionModal #type').val(response.data.type);
+                $('#editTransactionModal #payment_method').val(response.data.payment_method);
+                $('#editTransactionModal #quantity').val(response.data.quantity);
+                $('#editTransactionModal #date').val(response.data.date);
 
-            
-            $('#editTransactionModal').modal('show');
-        } else {
+
+                $('#editTransactionModal').modal('show');
+            } else {
+                alert('Error fetching transaction data');
+            }
+        },
+        error: function () {
             alert('Error fetching transaction data');
         }
-    },
-    error: function () {
-        alert('Error fetching transaction data');
-    }
-});
+    });
 });
 
 
 $(document).ready(function () {
     $('#editTransactionForm').on('submit', function (e) {
-        e.preventDefault(); 
+        e.preventDefault();
 
         $.ajax({
             url: baseUrl + 'transactions/update',
@@ -131,43 +131,43 @@ $(document).ready(function () {
             }
         },
         columns: [
-        { data: 'row_number' },
-        { data: 'transaction_id', visible: false },
-        { data: 'product_name' },
-        { 
-            data: 'customer_name',
-            render: function (data) {
-                return data ? data : '<span class="text-muted">-</span>';
-            }
-        },
-        {
-            data: 'type',
-            render: function (data, type, row) {
-                let badgeClass = data === 'In' ? 'badge-success' : 'badge-danger';
-                return `<span class="badge ${badgeClass}">${data}</span>`;
-            }
-        },
-        { data: 'quantity' },
-        { 
-            data: 'total_amount',
-            render: function (data) {
-                return data && parseFloat(data) > 0 ? '₱' + parseFloat(data).toFixed(2) : '<span class="text-muted">-</span>';
-            }
-        },
-        { 
-            data: 'payment_method',
-            render: function (data) {
-                return data ? data : '<span class="text-muted">-</span>';
-            }
-        },
-        { data: 'date' },
-        {
+            { data: 'row_number' },
+            { data: 'transaction_id', visible: false },
+            { data: 'product_name' },
+            {
+                data: 'customer_name',
+                render: function (data) {
+                    return data ? data : '<span class="text-muted">-</span>';
+                }
+            },
+            {
+                data: 'type',
+                render: function (data, type, row) {
+                    let badgeClass = data === 'In' ? 'badge-success' : 'badge-danger';
+                    return `<span class="badge ${badgeClass}">${data}</span>`;
+                }
+            },
+            { data: 'quantity' },
+            {
+                data: 'total_amount',
+                render: function (data) {
+                    return data && parseFloat(data) > 0 ? '₱' + parseFloat(data).toFixed(2) : '<span class="text-muted">-</span>';
+                }
+            },
+            {
+                data: 'payment_method',
+                render: function (data) {
+                    return data ? data : '<span class="text-muted">-</span>';
+                }
+            },
+            { data: 'date' },
+            {
 
-            data: null,
-            orderable: false,
-            searchable: false,
-            render: function (data, type, row) {
-                return `
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
                 <button class="btn btn-sm btn-warning edit-btn" data-transaction_id="${row.transaction_id}">
                 <i class="far fa-edit"></i>
                 </button>
@@ -175,8 +175,8 @@ $(document).ready(function () {
                 <i class="fas fa-trash-alt"></i>
                 </button>
                 `;
+                }
             }
-        }
         ],
         responsive: true,
         autoWidth: false
