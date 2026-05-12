@@ -45,7 +45,7 @@
                   <div class="card h-100 product-card border-secondary text-white" 
                        onclick="addToCart(<?= $p['product_id'] ?>, '<?= addslashes($p['product_name']) ?>', <?= $p['unit_price'] ?>, <?= $p['current_stock'] ?>)">
                     <div class="card-body p-3 text-center d-flex flex-column justify-content-center">
-                      <h5 class="mb-1 font-weight-bold" style="font-size:1.05rem;"><?= esc($p['product_name']) ?></h5>
+                      <h5 class="mb-1 font-weight-bold" style="font-size:1.05rem; color: #7f7f7f"><?= esc($p['product_name']) ?></h5>
                       <p class="mb-2 text-muted small"><?= esc($p['brand']) ?></p>
                       <h4 class="text-warning mb-2 font-weight-bold">₱<?= number_format($p['unit_price'], 2) ?></h4>
                       <span class="badge badge-info p-1 align-self-center mt-auto" style="font-size:0.85rem;">Stock: <?= $p['current_stock'] ?></span>
@@ -246,16 +246,16 @@
         let subtotal = item.price * item.quantity;
         total += subtotal;
         cartHtml += `
-          <div class="cart-item text-white">
+           <div class="cart-item ">
             <div class="d-flex justify-content-between align-items-center mb-1">
-              <span class="font-weight-bold" style="font-size:0.95rem;">${item.name}</span>
+              <span class="font-weight-bold" style="font-size:0.95rem; color: #7f7f7f">${item.name}</span>
               <span class="text-warning font-weight-bold">₱${(item.price).toFixed(2)}</span>
             </div>
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <button class="btn btn-xs btn-outline-secondary text-white" onclick="updateQuantity(${item.product_id}, -1)"><i class="fas fa-minus"></i></button>
-                <span class="mx-2 font-weight-bold">${item.quantity}</span>
-                <button class="btn btn-xs btn-outline-secondary text-white" onclick="updateQuantity(${item.product_id}, 1)"><i class="fas fa-plus"></i></button>
+                <button class="btn btn-xs btn-outline-secondary" onclick="updateQuantity(${item.product_id}, -1)"><i class="fas fa-minus style="color: #7f7f7f;></i></button>
+                <span class="mx-2 font-weight-bold" style= "color: #7f7f7f;">${item.quantity}</span>
+                <button class="btn btn-xs btn-outline-secondary" onclick="updateQuantity(${item.product_id}, 1)"><i class="fas fa-plus style="color: #7f7f7f;></i></button>
               </div>
               <div class="d-flex align-items-center">
                 <span class="mr-3 font-weight-bold text-success">₱${subtotal.toFixed(2)}</span>
