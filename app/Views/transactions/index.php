@@ -25,11 +25,7 @@
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Transaction Records</h3>
-              <div class="float-right">
-                <button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#AddNewModal">
-                  <i class="fa fa-plus-circle fa fw"></i> Add New
-                </button>
-              </div>
+
             </div>
             <div class="card-body">
               <table id="example1" class="table table-bordered table-striped table-sm">

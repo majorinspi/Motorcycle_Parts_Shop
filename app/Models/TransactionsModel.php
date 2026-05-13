@@ -24,6 +24,7 @@ class TransactionsModel extends Model
                 ->orLike('products.product_name', $searchValue)
                 ->orLike('customers.customer_name', $searchValue)
                 ->orLike('transactions.type', $searchValue)
+                ->orLike('transactions.payment_method', $searchValue)
                 ->groupEnd();
         }
 

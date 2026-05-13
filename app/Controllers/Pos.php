@@ -55,9 +55,37 @@ class Pos extends Controller
             }
         }
 
+        $validatedCart = [];
         $computedTotal = 0;
+
         foreach ($cart as $item) {
-            $computedTotal += floatval($item['price']) * intval($item['quantity']);
+            if (!isset($item['product_id'], $item['quantity'])) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid cart item.']);
+            }
+
+            $productId = intval($item['product_id']);
+            $quantity = intval($item['quantity']);
+
+            if ($quantity <= 0) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Invalid item quantity.']);
+            }
+
+            $product = $productsModel->find($productId);
+            if (!$product || $product['current_stock'] < $quantity) {
+                return $this->response->setJSON(['status' => 'error', 'message' => 'Insufficient stock for ' . ($product ? $product['product_name'] : 'Unknown Product')]);
+            }
+
+            $unitPrice = floatval($product['unit_price']);
+            $itemTotal = $unitPrice * $quantity;
+            $computedTotal += $itemTotal;
+
+            $validatedCart[] = [
+                'product_id' => $productId,
+                'quantity' => $quantity,
+                'unit_price' => $unitPrice,
+                'product_name' => $product['product_name'],
+                'current_stock' => $product['current_stock']
+            ];
         }
 
         if ($computedTotal <= 0) {
@@ -73,19 +101,13 @@ class Pos extends Controller
         $db = \Config\Database::connect();
         $db->transStart();
 
-        foreach ($cart as $item) {
-            $product = $productsModel->find($item['product_id']);
-            if (!$product || $product['current_stock'] < $item['quantity']) {
-                $db->transRollback();
-                return $this->response->setJSON(['status' => 'error', 'message' => 'Insufficient stock for ' . ($product ? $product['product_name'] : 'Unknown Product')]);
-            }
-
+        foreach ($validatedCart as $item) {
             $transactionData = [
                 'product_id' => $item['product_id'],
                 'customer_id' => empty($customerId) ? null : $customerId,
                 'type' => 'Out',
                 'quantity' => $item['quantity'],
-                'total_amount' => $item['price'] * $item['quantity'],
+                'total_amount' => $item['unit_price'] * $item['quantity'],
                 'payment_method' => empty($paymentMethod) ? 'Cash' : $paymentMethod,
                 'date' => date('Y-m-d H:i:s')
             ];
@@ -93,7 +115,7 @@ class Pos extends Controller
             $transactionsModel->insert($transactionData);
 
             // Deduct stock
-            $newStock = $product['current_stock'] - $item['quantity'];
+            $newStock = $item['current_stock'] - $item['quantity'];
             $productsModel->update($item['product_id'], ['current_stock' => $newStock]);
         }
 
